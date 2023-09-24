@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Button, Box } from "@mui/material";
-import { Link } from "react-router-dom";
 
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { fetchAllCategoriesAsync } from "../redux/reducers/categoriesReducer";
-import Category from "../interfaces/Category";
+import CategorySlide from "../components/CategorySlide";
 
 const Home = () => {
   const { categories, loading, error } = useAppSelector(
@@ -18,15 +16,16 @@ const Home = () => {
     dispatch(fetchAllCategoriesAsync());
   }, []);
   return (
-    <Carousel>
-      {categories.map((category, index) => (
-        <Box key={index} sx={{ backgroundColor: "red" }}>
-          <Link to={`/categories/${category.id}/products`}>
-            <h2>{category.name}</h2>
-          </Link>
-        </Box>
-      ))}
-    </Carousel>
+    <>
+      {!categories && !error && loading && <p>Loading...</p>}
+      {!categories && !loading && error && <p>Error happens!</p>}
+      <Carousel>
+        {!error &&
+          !loading &&
+          categories &&
+          categories.map((category) => <CategorySlide {...category} />)}
+      </Carousel>
+    </>
   );
 };
 

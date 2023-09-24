@@ -1,11 +1,16 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import { Container } from "@mui/material";
+
+import NavBar from "../components/NavBar";
 
 const Root = () => {
   return (
     <>
-      <p>NavBar</p>
-      <Outlet />
+      <NavBar />
+      <Container sx={{ marginTop: "30px", marginBottom: "30px" }}>
+        <Outlet />
+      </Container>
     </>
   );
 };

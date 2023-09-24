@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
-import Product from "../interfaces/Product";
 import { fetchAllProductsAsync } from "../redux/reducers/productsReducers";
 
 const ProductDetails = () => {
@@ -12,7 +11,7 @@ const ProductDetails = () => {
     (state) => state.productsReducer
   );
 
-  const productDetails = products.find((product) => product.id == id);
+  const productDetails = products.find((product) => product.id.toString() === id);
 
   const dispatch = useAppDispatch();
 

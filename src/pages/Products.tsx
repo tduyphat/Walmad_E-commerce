@@ -41,7 +41,7 @@ const Products = () => {
   //   );
   // };
 
-  const onDelete = (id: string) => {
+  const onDelete = (id: number) => {
     dispatch(deleteProductAsync(id));
     dispatch(fetchAllProductsAsync({ offset: 0, limit: 0 }));
   };
