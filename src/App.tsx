@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import AdminDashboard from "./pages/AdminDashboard";
@@ -10,8 +11,21 @@ import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import Root from "./pages/Root";
 import Products from "./pages/Products";
+import useAppDispatch from "./hooks/useAppDispatch";
+import { fetchAllCategoriesAsync } from "./redux/reducers/categoriesReducer";
+import { fetchAllProductsAsync } from "./redux/reducers/productsReducers";
 
 const App = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchAllCategoriesAsync());
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchAllProductsAsync({ offset: 0, limit: 0 }));
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: "/",

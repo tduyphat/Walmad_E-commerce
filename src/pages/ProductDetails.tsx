@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 
-import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
-import { fetchAllProductsAsync } from "../redux/reducers/productsReducers";
+import ProductDetailsCard from "../components/ProductDetailsCard";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -11,24 +10,16 @@ const ProductDetails = () => {
     (state) => state.productsReducer
   );
 
-  const productDetails = products.find((product) => product.id.toString() === id);
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fetchAllProductsAsync({ offset: 0, limit: 0 }));
-  }, []);
+  const productDetails = products.find(
+    (product) => product.id.toString() === id
+  );
 
   return (
     <div>
       {!productDetails && !error && loading && <p>Loading...</p>}
       {!productDetails && !loading && error && <p>Error happens!</p>}
       {!error && !loading && productDetails && (
-        <div>
-          <p>{productDetails.title}</p>
-          <p>{productDetails.price}</p>
-          <p>{productDetails.description}</p>
-        </div>
+        <ProductDetailsCard {...productDetails} />
       )}
     </div>
   );

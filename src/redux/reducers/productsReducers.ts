@@ -34,7 +34,7 @@ export const deleteProductAsync = createAsyncThunk(
   async (id: number) => {
     try {
       await axios.delete(`https://api.escuelajs.co/api/v1/products/${id}`);
-      return true;
+      return id;
     } catch (e) {
       const error = e as Error;
       return error;
@@ -46,15 +46,15 @@ const productsSlice = createSlice({
   name: "products",
   initialState: initialState,
   reducers: {
-    addProduct: (state, action: PayloadAction<Product>) => {
-      state.products.push(action.payload);
-    },
-    removeProduct: (state, action) => {
-      const foundIndex = state.products.findIndex(
-        (product) => product.id === action.payload
-      );
-      state.products.splice(foundIndex, 1);
-    },
+    // addProduct: (state, action: PayloadAction<Product>) => {
+    //   state.products.push(action.payload);
+    // },
+    // removeProduct: (state, action) => {
+    //   const foundIndex = state.products.findIndex(
+    //     (product) => product.id === action.payload
+    //   );
+    //   state.products.splice(foundIndex, 1);
+    // },
     sortByPrice: (state, action: PayloadAction<"asc" | "desc">) => {
       if (action.payload === "asc") {
         state.products.sort((a, b) => a.price - b.price);
@@ -94,6 +94,7 @@ const productsSlice = createSlice({
       if (!(action.payload instanceof Error)) {
         return {
           ...state,
+          products: state.products.filter((product) => product.id !== action.payload),
           loading: false,
         };
       }
@@ -117,6 +118,6 @@ const productsSlice = createSlice({
 });
 
 const productsReducer = productsSlice.reducer;
-export const { addProduct, removeProduct, sortByPrice } = productsSlice.actions;
+export const { sortByPrice } = productsSlice.actions;
 
 export default productsReducer;

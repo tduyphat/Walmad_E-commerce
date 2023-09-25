@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import axios from "axios";
 
-import useAppDispatch from "../hooks/useAppDispatch";
 import useAppSelector from "../hooks/useAppSelector";
 import Product from "../interfaces/Product";
-import { fetchAllProductsAsync } from "../redux/reducers/productsReducers";
-import axios from "axios";
+import CardsContainer from "../components/CardsContainer";
+import ProductCard from "../components/ProductCard";
 
 const ProductsByCategory = () => {
   const [categoryName, setCatgoryName] = useState("");
@@ -13,14 +15,11 @@ const ProductsByCategory = () => {
   const { products, loading, error } = useAppSelector(
     (state) => state.productsReducer
   );
-
   const productsByCategory = products.filter(
     (product) => product.category.id.toString() === id
   );
 
-  const dispatch = useAppDispatch();
-
-  const fetchCategory = async () => {
+  const fetchCategoryName = async () => {
     try {
       const result = await axios.get(
         `https://api.escuelajs.co/api/v1/categories/${id}`
@@ -33,27 +32,33 @@ const ProductsByCategory = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchAllProductsAsync({ offset: 0, limit: 0 }));
-  }, []);
-
-  useEffect(() => {
-    fetchCategory();
-  })
+    fetchCategoryName();
+  });
 
   return (
-    <div>
-      <h1>{categoryName}</h1>
+    <>
+      <Typography variant="h3">{categoryName}</Typography>
       {!productsByCategory && !error && loading && <p>Loading...</p>}
       {!productsByCategory && !loading && error && <p>Error happens!</p>}
-      {!error &&
-        !loading &&
-        productsByCategory &&
-        productsByCategory.map((product: Product) => (
-          <div key={product.id}>
-            <Link to={`/products/${product.id}`}>{product.title}</Link>
-          </div>
-        ))}
-    </div>
+
+      {!error && !loading && productsByCategory.length > 0 ? (
+        <CardsContainer>
+          {productsByCategory.map((product: Product) => (
+            <ProductCard {...product} />
+          ))}
+        </CardsContainer>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <i>No products in this category.</i>
+        </Box>
+      )}
+    </>
   );
 };
 

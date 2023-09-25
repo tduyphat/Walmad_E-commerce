@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import {
-  addProduct,
   deleteProductAsync,
   fetchAllProductsAsync,
   sortByPrice,
@@ -43,7 +42,7 @@ const Products = () => {
 
   const onDelete = (id: number) => {
     dispatch(deleteProductAsync(id));
-    dispatch(fetchAllProductsAsync({ offset: 0, limit: 0 }));
+    // dispatch(fetchAllProductsAsync({ offset: 0, limit: 0 }));
   };
 
   console.log(products);
