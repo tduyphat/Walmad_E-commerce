@@ -1,9 +1,10 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import React from "react";
+
 import Carousel from "react-material-ui-carousel";
 import Product from "../interfaces/Product";
 

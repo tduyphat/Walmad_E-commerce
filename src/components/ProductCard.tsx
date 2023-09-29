@@ -13,23 +13,23 @@ const ProductCard: React.FC<Product> = (product) => {
   const { id, title, images, price } = product;
   const navigate = useNavigate();
   return (
-    <Card>
+    <Card sx={{ backgroundColor: "#F5F5F5", borderRadius: "0.5em" }}>
       <CardActionArea
         sx={{
-          height: 340,
+          width: 300,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           alignItems: "flex-start",
         }}
         onClick={() => navigate(`/products/${id}`)}
       >
         <CardMedia component="img" alt={title} height="200" image={images[0]} />
         <CardContent>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="body1" gutterBottom>
             {title}
           </Typography>
-          <Typography variant="h6" color="primary">
+          <Typography variant="body1" color="primary">
             € {price}
           </Typography>
         </CardContent>

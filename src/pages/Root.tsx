@@ -8,7 +8,12 @@ const Root = () => {
   return (
     <>
       <NavBar />
-      <Container sx={{ marginTop: "30px", marginBottom: "30px" }}>
+      <Container
+        sx={{
+          marginTop: "30px",
+          marginBottom: "30px",
+        }}
+      >
         <Outlet />
       </Container>
     </>

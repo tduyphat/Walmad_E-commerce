@@ -22,7 +22,7 @@ const Products = () => {
   }, []);
 
   const onAddToCart = (payload: Product) => {
-    dispatch(addToCart(payload));
+    dispatch(addToCart({ product: payload, quantity: 1 }));
   };
 
   const onSortAsc = () => {
