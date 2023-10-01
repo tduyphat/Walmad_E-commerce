@@ -46,15 +46,6 @@ const productsSlice = createSlice({
   name: "products",
   initialState: initialState,
   reducers: {
-    // addProduct: (state, action: PayloadAction<Product>) => {
-    //   state.products.push(action.payload);
-    // },
-    // removeProduct: (state, action) => {
-    //   const foundIndex = state.products.findIndex(
-    //     (product) => product.id === action.payload
-    //   );
-    //   state.products.splice(foundIndex, 1);
-    // },
     sortByPrice: (state, action: PayloadAction<"asc" | "desc">) => {
       if (action.payload === "asc") {
         state.products.sort((a, b) => a.price - b.price);
@@ -62,31 +53,29 @@ const productsSlice = createSlice({
         state.products.sort((a, b) => b.price - a.price);
       }
     },
+    sortByTitle: (state, action: PayloadAction<"asc" | "desc">) => {
+      if (action.payload === "asc") {
+        state.products.sort((a, b) => a.title.localeCompare(b.title));
+      } else {
+        state.products.sort((a, b) => b.title.localeCompare(a.title));
+      }
+    },
   },
   extraReducers: (builder) => {
     //fetch all products
     builder.addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
       if (!(action.payload instanceof Error)) {
-        return {
-          ...state,
-          products: action.payload,
-          loading: false,
-        };
+        state.products = action.payload;
+        state.loading = false;
       }
     });
     builder.addCase(fetchAllProductsAsync.pending, (state, action) => {
-      return {
-        ...state,
-        loading: true,
-      };
+      state.loading = true;
     });
     builder.addCase(fetchAllProductsAsync.rejected, (state, action) => {
       if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message,
-        };
+        state.loading = false;
+        state.error = action.payload.message;
       }
     });
     //delete product
@@ -94,7 +83,9 @@ const productsSlice = createSlice({
       if (!(action.payload instanceof Error)) {
         return {
           ...state,
-          products: state.products.filter((product) => product.id !== action.payload),
+          products: state.products.filter(
+            (product) => product.id !== action.payload
+          ),
           loading: false,
         };
       }
@@ -118,6 +109,6 @@ const productsSlice = createSlice({
 });
 
 const productsReducer = productsSlice.reducer;
-export const { sortByPrice } = productsSlice.actions;
+export const { sortByPrice, sortByTitle } = productsSlice.actions;
 
 export default productsReducer;

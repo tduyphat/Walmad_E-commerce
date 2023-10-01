@@ -36,26 +36,17 @@ const categoriesSlice = createSlice({
     //fetch all categories
     builder.addCase(fetchAllCategoriesAsync.fulfilled, (state, action) => {
       if (!(action.payload instanceof Error)) {
-        return {
-          ...state,
-          categories: action.payload,
-          loading: false,
-        };
+        state.categories = action.payload;
+        state.loading = false;
       }
     });
     builder.addCase(fetchAllCategoriesAsync.pending, (state, action) => {
-      return {
-        ...state,
-        loading: true,
-      };
+      state.loading = true;
     });
     builder.addCase(fetchAllCategoriesAsync.rejected, (state, action) => {
       if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message,
-        };
+        state.loading = false;
+        state.error = action.payload.message;
       }
     });
   },

@@ -4,11 +4,52 @@ import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { ButtonGroup, TextField } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { blueGrey } from "@mui/material/colors";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 import Carousel from "react-material-ui-carousel";
-import Product from "../interfaces/Product";
+import ProductDetailsCardProps from "../interfaces/ProductDetailsCardProps";
 
-const ProductDetailsCard: React.FC<Product> = (productDetails) => {
+const StyledButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText(blueGrey[50]),
+  backgroundColor: blueGrey[50],
+  borderColor: blueGrey[200],
+  "&:hover": {
+    backgroundColor: blueGrey[100],
+    borderColor: blueGrey[300],
+  },
+}));
+
+const StyledInput = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderRadius: 0,
+      borderColor: blueGrey[200],
+    },
+    "&:hover fieldset": {
+      borderColor: blueGrey[300],
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: blueGrey[500],
+    },
+    "& input": {
+      textAlign: "center",
+      width: 60,
+      color: blueGrey[700],
+    },
+  },
+});
+
+const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
+  productDetails,
+  amount,
+  setAmount,
+  handleAmountChange,
+}) => {
   const { title, description, price, images } = productDetails;
   return (
     <Grid container spacing={4}>
@@ -17,6 +58,7 @@ const ProductDetailsCard: React.FC<Product> = (productDetails) => {
           <Carousel>
             {images.map((image) => (
               <CardMedia
+                key={image}
                 component="img"
                 alt={title}
                 height="400"
@@ -51,8 +93,25 @@ const ProductDetailsCard: React.FC<Product> = (productDetails) => {
           <Typography variant="h4" color="primary" gutterBottom>
             € {price}
           </Typography>
+          <ButtonGroup>
+            <StyledButton
+              onClick={() => setAmount(amount - 1)}
+              disabled={amount === 1}
+            >
+              <RemoveIcon fontSize="small" />
+            </StyledButton>
+            <StyledInput
+              size="small"
+              onChange={handleAmountChange}
+              value={amount}
+            />
+            <StyledButton onClick={() => setAmount(amount + 1)}>
+              <AddIcon fontSize="small" />
+            </StyledButton>
+          </ButtonGroup>
           <Button variant="contained" color="primary" size="large">
             Add to Cart
+            <AddShoppingCartIcon sx={{ marginLeft: 1 }} />
           </Button>
         </Box>
       </Grid>

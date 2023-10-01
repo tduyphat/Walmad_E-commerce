@@ -8,7 +8,7 @@ const Home = () => {
   const { categories, loading, error } = useAppSelector(
     (state) => state.categoriesReducer
   );
-  
+
   return (
     <>
       {!categories && !error && loading && <p>Loading...</p>}
@@ -17,7 +17,9 @@ const Home = () => {
         {!error &&
           !loading &&
           categories &&
-          categories.map((category) => <CategorySlide {...category} />)}
+          categories.map((category) => (
+            <CategorySlide key={category.id} {...category} />
+          ))}
       </Carousel>
     </>
   );

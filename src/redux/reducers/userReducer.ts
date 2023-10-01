@@ -69,49 +69,35 @@ const userSlice = createSlice({
     logout: (state, action) => {
       state.user = null;
       state.isLoggedIn = false;
-      state.accessToken = null;   
-      localStorage.removeItem("user");  
+      state.accessToken = null;
     },
   },
   extraReducers: (builder) => {
+    //login
     builder.addCase(loginAsync.fulfilled, (state, action) => {
-      if (action.payload.hasOwnProperty("access_token")) {
-        return {
-          ...state,
-          accessToken: action.payload.access_token,
-          isLoggedIn: true,
-        };
+      if (action.payload.statusCode === 401) {
+        state.error = action.payload.message;
+      } else {
+        state.accessToken = action.payload.access_token;
+        state.isLoggedIn = true;
       }
-      return {
-        ...state,
-        error: action.payload.message,
-      };
     });
+    //getUser
     builder.addCase(getUserWithSessionAsync.fulfilled, (state, action) => {
       if (action.payload.statusCode === 401) {
-        return {
-          ...state,
-          error: action.payload.message,
-        };
+        state.error = action.payload.message;
+      } else {
+        state.user = action.payload;
+        state.loading = false;
       }
-      return {
-        ...state,
-        user: action.payload,
-      };
     });
     builder.addCase(getUserWithSessionAsync.pending, (state, action) => {
-      return {
-        ...state,
-        loading: true,
-      };
+      state.loading = true;
     });
     builder.addCase(getUserWithSessionAsync.rejected, (state, action) => {
       if (action.payload instanceof Error) {
-        return {
-          ...state,
-          loading: false,
-          error: action.payload.message,
-        };
+        state.loading = false;
+        state.error = action.payload.message;
       }
     });
   },
