@@ -27,17 +27,12 @@ export const loginAsync = createAsyncThunk(
         {
           email: email,
           password: password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
         }
       );
       return result.data;
     } catch (e) {
       const error = e as Error;
-      return error;
+      return error.message;
     }
   }
 );
@@ -75,11 +70,12 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     //login
     builder.addCase(loginAsync.fulfilled, (state, action) => {
-      if (action.payload.statusCode === 401) {
-        state.error = action.payload.message;
-      } else {
+      if (action.payload.hasOwnProperty("access_token")) {
         state.accessToken = action.payload.access_token;
         state.isLoggedIn = true;
+        state.error = null;
+      } else {
+        state.error = "Wrong email or password!";
       }
     });
     //getUser

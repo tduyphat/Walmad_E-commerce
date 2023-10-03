@@ -1,7 +1,6 @@
 import {
   addToCart,
   removeOneFromCart,
-  removeFromCart,
 } from "../../redux/reducers/cartReducer";
 import cartReducer from "../../redux/reducers/cartReducer";
 import CartItem from "../../interfaces/CartItem";
@@ -64,13 +63,5 @@ describe("cartReducer", () => {
 
     expect(newState).toHaveLength(2);
     expect(newState[1].quantity).toBe(2);
-  });
-
-  it("should handle REMOVE_FROM_CART", () => {
-    const action = removeFromCart(1);
-    const newState = cartReducer(initialState, action);
-
-    expect(newState).toHaveLength(1);
-    expect(newState[0].id).toBe(2);
   });
 });

@@ -10,9 +10,12 @@ import { blueGrey } from "@mui/material/colors";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-
 import Carousel from "react-material-ui-carousel";
+
 import ProductDetailsCardProps from "../interfaces/ProductDetailsCardProps";
+import useAppDispatch from "../hooks/useAppDispatch";
+import Product from "../interfaces/Product";
+import { addToCart } from "../redux/reducers/cartReducer";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(blueGrey[50]),
@@ -51,6 +54,11 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   handleAmountChange,
 }) => {
   const { title, description, price, images } = productDetails;
+  const dispatch = useAppDispatch();
+  const onAddToCart = (payload: Product) => {
+    dispatch(addToCart({ product: payload, quantity: amount }));
+  };
+
   return (
     <Grid container spacing={4}>
       <Grid item xs={12} md={6}>
@@ -109,7 +117,12 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
               <AddIcon fontSize="small" />
             </StyledButton>
           </ButtonGroup>
-          <Button variant="contained" color="primary" size="large">
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={() => onAddToCart(productDetails)}
+          >
             Add to Cart
             <AddShoppingCartIcon sx={{ marginLeft: 1 }} />
           </Button>

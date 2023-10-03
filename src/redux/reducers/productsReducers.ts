@@ -3,6 +3,8 @@ import axios from "axios";
 
 import Product from "../../interfaces/Product";
 import PaginationQuery from "../../interfaces/PaginationQuery";
+import CreateProductInput from "../../interfaces/CreateProductInput";
+import UpdateProductInput from "../../interfaces/UpdateProductInput";
 
 const initialState: {
   products: Product[];
@@ -28,6 +30,34 @@ export const fetchAllProductsAsync = createAsyncThunk(
     }
   }
 );
+
+export const createProductAsync = createAsyncThunk(
+  "createProductAsync",
+  async(newProduct: CreateProductInput, { rejectWithValue }) => {
+    try {
+      const result = await axios.post<Product>("https://api.escuelajs.co/api/v1/products/", newProduct)
+      return result.data;
+    }
+    catch (e) {
+      const error = e as Error;
+      return rejectWithValue(error.message);
+    }
+  }
+)
+
+export const updateProductAsync = createAsyncThunk(
+  "updateProductAsync",
+  async(updateProduct: UpdateProductInput, { rejectWithValue }) => {
+    try {
+      const result = await axios.post<Product>("https://api.escuelajs.co/api/v1/products/", updateProduct)
+      return result.data;
+    }
+    catch (e) {
+      const error = e as Error;
+      return rejectWithValue(error.message);
+    }
+  }
+)
 
 export const deleteProductAsync = createAsyncThunk(
   "deleteProductAsync",
@@ -105,6 +135,20 @@ const productsSlice = createSlice({
         };
       }
     });
+    //create product
+    builder.addCase(createProductAsync.fulfilled, (state, action) => {
+      state.products.push(action.payload);
+    })
+    builder.addCase(createProductAsync.rejected, (state, action) => {
+      state.error = action.payload as string;
+    })
+    //update product
+    // builder.addCase(createProductAsync.fulfilled, (state, action) => {
+    //   const foundIndex = state.products.findIndex(product => product.id === action.payload.id)
+    //   if (foundIndex >= 0) {
+    //     state.products[foundIndex] = action.payload;
+    //   }
+    // })
   },
 });
 
