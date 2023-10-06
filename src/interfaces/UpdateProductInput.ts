@@ -1,5 +1,8 @@
 import CreateProductInput from "./CreateProductInput";
 
-type UpdateProductInput = Partial<CreateProductInput>
+interface UpdateProductInput {
+  update: Partial<CreateProductInput>;
+  id: number;
+}
 
 export default UpdateProductInput;

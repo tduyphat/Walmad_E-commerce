@@ -10,28 +10,25 @@ const preCartReducer: CartItem[] = JSON.parse(
   localStorage.getItem("cart") || "[]"
 );
 
-const preUserReducer = JSON.parse(
-  localStorage.getItem("user") || "{}"
-);
+export const createStore = () => {
+  return configureStore({
+    reducer: {
+      productsReducer,
+      cartReducer,
+      categoriesReducer,
+      userReducer,
+    },
+    preloadedState: {
+      cartReducer: preCartReducer
+    },
+  });
+};
 
-const store = configureStore({
-  reducer: {
-    productsReducer,
-    cartReducer,
-    categoriesReducer,
-    userReducer
-  },
-  preloadedState: {
-    cartReducer: preCartReducer,
-    userReducer: preUserReducer,
-  },
-});
+const store = createStore();
 
 const updateLocalStorage = () => {
   const cart = store.getState().cartReducer;
-  const user = store.getState().userReducer;
   localStorage.setItem("cart", JSON.stringify(cart));
-  localStorage.setItem("user", JSON.stringify(user));
 };
 
 store.subscribe(updateLocalStorage);

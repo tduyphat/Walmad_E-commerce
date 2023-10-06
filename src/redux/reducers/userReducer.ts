@@ -75,6 +75,8 @@ const userSlice = createSlice({
         state.isLoggedIn = true;
         state.error = null;
       } else {
+        state.accessToken = null;
+        state.isLoggedIn = false;
         state.error = "Wrong email or password!";
       }
     });

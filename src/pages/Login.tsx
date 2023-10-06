@@ -10,16 +10,11 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
-import store from "../redux/store";
 
 import useAppDispatch from "../hooks/useAppDispatch";
 import { loginAsync } from "../redux/reducers/userReducer";
-import useAppSelector from "../hooks/useAppSelector";
 
 const SignIn = () => {
-  const { accessToken, isLoggedIn, error } = useAppSelector(
-    (state) => state.userReducer
-  ); 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,19 +32,16 @@ const SignIn = () => {
   };
 
   const handleSubmit = async () => {
-    await dispatch(
+    const response = await dispatch(
       loginAsync({
         email: email,
         password: password,
       })
     );
-    store.getState();
-    const token = accessToken;
-    const message = error;
-    if (token && !message) {
-      navigate("/");    
+    if (response.payload.hasOwnProperty("access_token")) {
+      navigate("/");
     } else {
-      alert(message);
+      setErrorMessage("Request failed with status code 401");
     }
   };
 
