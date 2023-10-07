@@ -14,7 +14,7 @@ const initialState: {
 
 export const fetchAllCategoriesAsync = createAsyncThunk(
   "fetchAllCategoriesAsync",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       const result = await axios.get(
         `https://api.escuelajs.co/api/v1/categories/`
@@ -23,7 +23,7 @@ export const fetchAllCategoriesAsync = createAsyncThunk(
       return data;
     } catch (e) {
       const error = e as Error;
-      return error;
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -35,19 +35,15 @@ const categoriesSlice = createSlice({
   extraReducers: (builder) => {
     //fetch all categories
     builder.addCase(fetchAllCategoriesAsync.fulfilled, (state, action) => {
-      if (!(action.payload instanceof Error)) {
-        state.categories = action.payload;
-        state.loading = false;
-      }
+      state.categories = action.payload;
+      state.loading = false;
     });
     builder.addCase(fetchAllCategoriesAsync.pending, (state, action) => {
       state.loading = true;
     });
     builder.addCase(fetchAllCategoriesAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        state.loading = false;
-        state.error = action.payload.message;
-      }
+      state.loading = false;
+      state.error = action.payload as string;
     });
   },
 });

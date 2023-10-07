@@ -3,46 +3,39 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import useAppDispatch from "../hooks/useAppDispatch";
-// import { loginAsync } from "../redux/reducers/userReducer";
+import { loginUserAsync } from "../redux/reducers/usersReducer";
 
 const SignIn = () => {
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
     setEmail(event.target.value);
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
     setPassword(event.target.value);
   };
 
   const handleSubmit = async () => {
-    // const response = await dispatch(
-    //   loginAsync({
-    //     email: email,
-    //     password: password,
-    //   })
-    // );
-    // if (response.payload.hasOwnProperty("access_token")) {
-    //   navigate("/");
-    // } else {
-    //   setErrorMessage("Request failed with status code 401");
-    // }
+    const result = await dispatch(loginUserAsync({ email, password }));
+    if (result.payload?.hasOwnProperty("email")) {
+      navigate("/");
+      toast.success("Logged in successfully!");
+    } else {
+      toast.error("Incorrect email or password!");
+    }
   };
 
   return (
@@ -65,7 +58,6 @@ const SignIn = () => {
         <Box sx={{ mt: 1 }}>
           <TextField
             margin="normal"
-            required
             fullWidth
             id="email"
             label="Email Address"
@@ -78,7 +70,6 @@ const SignIn = () => {
           />
           <TextField
             margin="normal"
-            required
             fullWidth
             name="password"
             label="Password"
@@ -89,11 +80,6 @@ const SignIn = () => {
               handlePasswordChange(e)
             }
           />
-          {errorMessage && (
-            <Typography variant="body2" sx={{ color: "red" }}>
-              {errorMessage}
-            </Typography>
-          )}
           <Button
             onClick={handleSubmit}
             fullWidth
@@ -108,7 +94,7 @@ const SignIn = () => {
             sx={{ display: "flex", justifyContent: "space-around" }}
           >
             <Grid item>
-              <Link variant="body2">{"Don't have an account? Sign Up"}</Link>
+              <Link to="/register">Don't have an account? Sign Up</Link>
             </Grid>
           </Grid>
         </Box>

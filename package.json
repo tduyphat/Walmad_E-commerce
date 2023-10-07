@@ -22,6 +22,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
+    "react-toastify": "^9.1.3",
     "redux-persist": "github:rt2zz/redux-persist",
     "sass": "^1.61.0",
     "styled-components": "^6.0.8",
