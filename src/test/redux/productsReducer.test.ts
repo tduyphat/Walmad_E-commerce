@@ -10,7 +10,7 @@ import productsReducer, {
 } from "../../redux/reducers/productsReducers";
 import { createStore } from "../../redux/store";
 import { productsData } from "../data/productsData";
-import server from "../shared/server";
+import productServer from "../shared/productServer";
 
 let store = createStore();
 
@@ -18,11 +18,11 @@ beforeEach(() => {
   store = createStore();
 });
 
-beforeAll(() => server.listen());
+beforeAll(() => productServer.listen());
 
-afterEach(() => server.resetHandlers());
+afterEach(() => productServer.resetHandlers());
 
-afterAll(() => server.close());
+afterAll(() => productServer.close());
 
 describe("Test normal actions in productsReducer", () => {
   test("Should sort the products by price asc", () => {

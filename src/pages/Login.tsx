@@ -12,7 +12,7 @@ import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
 
 import useAppDispatch from "../hooks/useAppDispatch";
-import { loginAsync } from "../redux/reducers/userReducer";
+// import { loginAsync } from "../redux/reducers/userReducer";
 
 const SignIn = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -32,17 +32,17 @@ const SignIn = () => {
   };
 
   const handleSubmit = async () => {
-    const response = await dispatch(
-      loginAsync({
-        email: email,
-        password: password,
-      })
-    );
-    if (response.payload.hasOwnProperty("access_token")) {
-      navigate("/");
-    } else {
-      setErrorMessage("Request failed with status code 401");
-    }
+    // const response = await dispatch(
+    //   loginAsync({
+    //     email: email,
+    //     password: password,
+    //   })
+    // );
+    // if (response.payload.hasOwnProperty("access_token")) {
+    //   navigate("/");
+    // } else {
+    //   setErrorMessage("Request failed with status code 401");
+    // }
   };
 
   return (

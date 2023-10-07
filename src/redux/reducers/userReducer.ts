@@ -2,106 +2,100 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import User from "../../interfaces/User";
-import LoginCredentials from "../../interfaces/LoginCredentials";
+import UserCredentials from "../../interfaces/UserCredentials";
+import UsersReducerState from "../../interfaces/UsersReducerState";
 
-const initialState: {
-  user: User | null;
-  isLoggedIn: boolean;
-  accessToken: string | null;
-  error: string | null;
-  loading: boolean;
-} = {
-  user: null,
-  isLoggedIn: false,
-  accessToken: null,
-  error: null,
-  loading: false,
+const initialState: UsersReducerState = {
+  users: [],
 };
 
-export const loginAsync = createAsyncThunk(
-  "loginAsync",
-  async ({ email, password }: LoginCredentials) => {
-    try {
-      const result = await axios.post(
-        "https://api.escuelajs.co/api/v1/auth/login",
-        {
-          email: email,
-          password: password,
-        }
-      );
-      return result.data;
-    } catch (e) {
-      const error = e as Error;
-      return error.message;
-    }
+export const fetchUsersAsync = createAsyncThunk<
+  User[],
+  void,
+  { rejectValue: string }
+>("fetchUsersAsync", async (_, { rejectWithValue }) => {
+  try {
+    const result = await axios.get("https://api.escuelajs.co/api/v1/users");
+    return result.data;
+  } catch (e) {
+    const error = e as Error;
+    return rejectWithValue(error.message);
   }
-);
-
-export const getUserWithSessionAsync = createAsyncThunk(
-  "getUserWithSessionAsync",
-  async (token: string) => {
-    try {
-      const result = await axios.get(
-        "https://api.escuelajs.co/api/v1/auth/profile",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return result.data;
-    } catch (e) {
-      const error = e as Error;
-      return error;
+});
+export const loginUserAsync = createAsyncThunk<
+  User,
+  UserCredentials,
+  { rejectValue: string }
+>("loginUserAsync", async (cred, { rejectWithValue, dispatch }) => {
+  try {
+    const result = await axios.post(
+      "https://api.escuelajs.co/api/v1/auth/login",
+      cred
+    );
+    const { access_token } = result.data;
+    const authenticatedResult = await dispatch(
+      authenticateUserAsync(access_token)
+    );
+    if (
+      typeof authenticatedResult.payload === "string" ||
+      !authenticatedResult.payload
+    ) {
+      throw Error(authenticatedResult.payload || "Cannot login");
+    } else {
+      return authenticatedResult.payload as User;
     }
+  } catch (e) {
+    const error = e as Error;
+    return rejectWithValue(error.message);
   }
-);
-
+});
+export const authenticateUserAsync = createAsyncThunk<
+  User,
+  string,
+  { rejectValue: string }
+>("authenticateUserAsync", async (access_token, { rejectWithValue }) => {
+  try {
+    const getprofile = await axios.get(
+      "https://api.escuelajs.co/api/v1/auth/profile",
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    return getprofile.data;
+  } catch (e) {
+    const error = e as Error;
+    return rejectWithValue(error.message);
+  }
+});
 const userSlice = createSlice({
-  name: "user",
-  initialState: initialState,
-  reducers: {
-    logout: (state, action) => {
-      state.user = null;
-      state.isLoggedIn = false;
-      state.accessToken = null;
-    },
-  },
+  name: "userSlice",
+  initialState,
+  reducers: {},
   extraReducers: (builder) => {
+    //fetch all users
+    builder.addCase(fetchUsersAsync.fulfilled, (state, action) => {
+      state.users = action.payload;
+    });
+    builder.addCase(fetchUsersAsync.rejected, (state, action) => {
+      state.error = action.payload;
+    });
     //login
-    builder.addCase(loginAsync.fulfilled, (state, action) => {
-      if (action.payload.hasOwnProperty("access_token")) {
-        state.accessToken = action.payload.access_token;
-        state.isLoggedIn = true;
-        state.error = null;
-      } else {
-        state.accessToken = null;
-        state.isLoggedIn = false;
-        state.error = "Wrong email or password!";
-      }
+    builder.addCase(loginUserAsync.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
     });
-    //getUser
-    builder.addCase(getUserWithSessionAsync.fulfilled, (state, action) => {
-      if (action.payload.statusCode === 401) {
-        state.error = action.payload.message;
-      } else {
-        state.user = action.payload;
-        state.loading = false;
-      }
+    builder.addCase(loginUserAsync.rejected, (state, action) => {
+      state.error = action.payload;
     });
-    builder.addCase(getUserWithSessionAsync.pending, (state, action) => {
-      state.loading = true;
+    //authenticate user
+    builder.addCase(authenticateUserAsync.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
     });
-    builder.addCase(getUserWithSessionAsync.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        state.loading = false;
-        state.error = action.payload.message;
-      }
+    builder.addCase(authenticateUserAsync.rejected, (state, action) => {
+      state.error = action.payload;
     });
   },
 });
-
-const userReducer = userSlice.reducer;
-export const { logout } = userSlice.actions;
-
-export default userReducer;
+const usersReducer = userSlice.reducer;
+export default usersReducer;
