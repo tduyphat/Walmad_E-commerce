@@ -17,6 +17,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Badge from "@mui/material/Badge";
 
 import useAppSelector from "../hooks/useAppSelector";
+import useAppDispatch from "../hooks/useAppDispatch";
+import { logOut } from "../redux/reducers/usersReducer";
 
 const pages = [
   {
@@ -27,6 +29,9 @@ const pages = [
     title: "Products",
     path: "/products",
   },
+];
+
+const authenticate = [
   {
     title: "Login",
     path: "/login",
@@ -37,23 +42,14 @@ const pages = [
   },
 ];
 
-const settings = [
-  {
-    title: "Profile",
-    path: "/profile",
-  },
-  {
-    title: "Dashboard",
-    path: "/Admin",
-  },
-];
-
 const NavBar = ({
   setCartOpen,
 }: {
   setCartOpen: (cartOpen: boolean) => void;
 }) => {
   const cart = useAppSelector((state) => state.cartReducer);
+  const { currentUser } = useAppSelector((state) => state.usersReducer);
+  const dispatch = useAppDispatch();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -75,6 +71,10 @@ const NavBar = ({
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logOut());
   };
 
   return (
@@ -160,7 +160,7 @@ const NavBar = ({
               textDecoration: "none",
             }}
           >
-            LOGO
+            WALMAD
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -176,46 +176,74 @@ const NavBar = ({
               </Button>
             ))}
           </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting.title} onClick={handleCloseUserMenu}>
-                  <Typography
-                    textAlign="center"
-                    onClick={() => navigate(setting.path)}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {currentUser ? (
+              <>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt={currentUser.name} src={currentUser.avatar} />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography
+                      textAlign="center"
+                      onClick={() => navigate("/profile")}
+                    >
+                      Profile
+                    </Typography>
+                  </MenuItem>
+                  {currentUser?.role === "admin" && (
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      <Typography
+                        onClick={() => navigate("/admin")}
+                        textAlign="center"
+                      >
+                        Dashboard
+                      </Typography>
+                    </MenuItem>
+                  )}
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography onClick={handleLogout} textAlign="center">
+                      Logout
+                    </Typography>
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <>
+                {authenticate.map((auth) => (
+                  <Button
+                    key={auth.title}
+                    onClick={() => navigate(auth.path)}
+                    sx={{
+                      color: "white",
+                      display: "block",
+                    }}
                   >
-                    {setting.title}
-                  </Typography>
-                </MenuItem>
-              ))}
-              <MenuItem>
-                <Typography textAlign="center">Logout</Typography>
-              </MenuItem>
-            </Menu>
+                    {auth.title}
+                  </Button>
+                ))}
+              </>
+            )}
             <IconButton onClick={() => setCartOpen(true)}>
               <Badge badgeContent={cart.length} color="error">
-                <ShoppingCartIcon/>
+                <ShoppingCartIcon />
               </Badge>
             </IconButton>
           </Box>

@@ -72,7 +72,13 @@ export const authenticateUserAsync = createAsyncThunk<
 const userSlice = createSlice({
   name: "userSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    logOut: (state) => {
+      state.users = [];
+      state.currentUser = undefined;
+      state.error = undefined;
+    },
+  },
   extraReducers: (builder) => {
     //fetch all users
     builder.addCase(fetchUsersAsync.fulfilled, (state, action) => {
@@ -98,4 +104,5 @@ const userSlice = createSlice({
   },
 });
 const usersReducer = userSlice.reducer;
+export const { logOut } = userSlice.actions;
 export default usersReducer;

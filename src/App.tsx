@@ -11,6 +11,8 @@ import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import Root from "./pages/Root";
 import Products from "./pages/Products";
+import CheckAdmin from "./utils/CheckAdmin";
+import CheckAuth from "./utils/CheckAuth";
 import useAppDispatch from "./hooks/useAppDispatch";
 import { fetchAllCategoriesAsync } from "./redux/reducers/categoriesReducer";
 import { fetchAllProductsAsync } from "./redux/reducers/productsReducers";
@@ -50,7 +52,11 @@ const App = () => {
         },
         {
           path: "/admin",
-          element: <AdminDashboard />,
+          element: (
+            <CheckAdmin>
+              <AdminDashboard />
+            </CheckAdmin>
+          ),
         },
         {
           path: "/login",
@@ -62,7 +68,11 @@ const App = () => {
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: (
+            <CheckAuth>
+              <Profile />
+            </CheckAuth>
+          ),
         },
       ],
     },

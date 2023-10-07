@@ -2,10 +2,10 @@ import React from "react";
 import useAppSelector from "../hooks/useAppSelector";
 import { Navigate } from "react-router-dom";
 
-const CheckAuth = (props: any) => {
+const CheckAdmin = (props: any) => {
   const { children } = props;
   const { currentUser } = useAppSelector((state) => state.usersReducer);
-  return currentUser ? children : <Navigate to="/login" replace={true} />;
+  return currentUser?.role === "admin" ? children : <Navigate to="/" replace={true} />;
 };
 
-export default CheckAuth;
+export default CheckAdmin;

@@ -1,6 +1,7 @@
 import {
   authenticateUserAsync,
   fetchUsersAsync,
+  logOut,
   loginUserAsync,
 } from "../../redux/reducers/usersReducer";
 import { createStore } from "../../redux/store";
@@ -39,5 +40,13 @@ describe("Test usersReducer async actions", () => {
     expect(store.getState().usersReducer.currentUser).toMatchObject(
       usersData[1]
     );
+  });
+
+  test("Should logout user", async () => {
+    await store.dispatch(
+      loginUserAsync({ email: "john@mail.com", password: "changeme" })
+    );
+    store.dispatch(logOut());
+    expect(store.getState().usersReducer.currentUser).toBe(undefined);
   });
 });
