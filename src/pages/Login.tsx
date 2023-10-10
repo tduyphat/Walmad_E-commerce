@@ -91,10 +91,15 @@ const SignIn = () => {
           </Button>
           <Grid
             container
-            sx={{ display: "flex", justifyContent: "space-around" }}
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+            }}
           >
             <Grid item>
-              <Link to="/register">Don't have an account? Sign Up</Link>
+              <Link to="/register">
+                Don't have an account? Sign Up
+              </Link>
             </Grid>
           </Grid>
         </Box>

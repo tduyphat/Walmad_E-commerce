@@ -16,6 +16,7 @@ import ProductDetailsCardProps from "../interfaces/ProductDetailsCardProps";
 import useAppDispatch from "../hooks/useAppDispatch";
 import Product from "../interfaces/Product";
 import { addToCart } from "../redux/reducers/cartReducer";
+import { toast } from "react-toastify";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(blueGrey[50]),
@@ -42,7 +43,6 @@ const StyledInput = styled(TextField)({
     "& input": {
       textAlign: "center",
       width: 60,
-      color: blueGrey[700],
     },
   },
 });
@@ -57,6 +57,7 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   const dispatch = useAppDispatch();
   const onAddToCart = (payload: Product) => {
     dispatch(addToCart({ product: payload, quantity: amount }));
+    amount > 1 ? toast.info(`Added ${amount} items to cart`) : toast.info("Added 1 item to cart");
   };
 
   return (
@@ -92,7 +93,7 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
             justifyContent: "space-between",
           }}
         >
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" color="primary" gutterBottom>
             {title}
           </Typography>
           <Typography variant="body1" color="textSecondary">

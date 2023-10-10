@@ -1,70 +1,59 @@
-import Button from "@mui/material/Button";
-import styled from "styled-components";
+import React from "react";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
+import { useDispatch } from "react-redux";
+import { addOneToCart, removeOneFromCart } from "../redux/reducers/cartReducer";
 import CartItem from "../interfaces/CartItem";
-import useAppDispatch from "../hooks/useAppDispatch";
-import {
-  addOneToCart,
-  removeOneFromCart,
-} from "../redux/reducers/cartReducer";
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-family: Arial, Helvetica, sans-serif;
-  border-bottom: 1px solid lightblue;
-  padding-bottom: 20px;
-
-  div {
-    flex: 1;
-  }
-
-  .information,
-  .buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  img {
-    max-width: 80px;
-    object-fit: cover;
-    margin-left: 40px;
-  }
-`;
 
 const ItemInCart = (item: CartItem) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
 
   return (
-    <Wrapper>
-      <div>
-        <h3>{item.title}</h3>
-        <div className="information">
-          <p>Price: € {item.price}</p>
-          <p>Total: € {item.quantity * item.price}</p>
-        </div>
-        <div className="buttons">
-          <Button
-            size="small"
-            disableElevation
-            variant="contained"
-            onClick={() => dispatch(removeOneFromCart(item.id))}
-          >
-            -
-          </Button>
-          <p>{item.quantity}</p>
-          <Button
-            size="small"
-            disableElevation
-            variant="contained"
-            onClick={() => dispatch(addOneToCart(item.id))}
-          >
-            +
-          </Button>
-        </div>
-      </div>
-      <img src={item.images[0]} alt={item.title} />
-    </Wrapper>
+    <Paper
+      sx={{backgroundColor: "inherit"}}
+      elevation={0}
+      style={{ paddingBottom: 20 }}
+    >
+      <Grid container justifyContent="space-between">
+        <Grid item xs={12} md={6}>
+          <Typography variant="h5">{item.title}</Typography>
+          <Grid container justifyContent="space-between">
+            <Typography>Price: € {item.price}</Typography>
+            <Typography>Total: € {item.quantity * item.price}</Typography>
+          </Grid>
+          <Grid container alignItems="center">
+            <Typography>Quantity: </Typography>
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={() => dispatch(removeOneFromCart(item.id))}
+            >
+              <ChevronLeftIcon />
+            </IconButton>
+            <Typography>{item.quantity}</Typography>
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={() => dispatch(addOneToCart(item.id))}
+            >
+              <ChevronRightIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <img
+            src={item.images[0]}
+            alt={item.title}
+            style={{ maxWidth: 180, objectFit: "cover", marginLeft: 40 }}
+          />
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 

@@ -13,7 +13,7 @@ const ProductCard: React.FC<Product> = (product) => {
   const { id, title, images, price } = product;
   const navigate = useNavigate();
   return (
-    <Card sx={{ backgroundColor: "#F5F5F5", borderRadius: "0.5em" }}>
+    <Card sx={{ borderRadius: "0.5em" }}>
       <CardActionArea
         sx={{
           width: 300,

@@ -101,9 +101,9 @@ const ProductsByCategory = () => {
 
   return (
     <>
-      <Typography variant="h3">{categoryName}</Typography>
-      {!error && loading && <p>Loading...</p>}
-      {!loading && error && <p>Error happens!</p>}
+      <Typography variant="h3" color="primary">{categoryName}</Typography>
+      {!error && loading && <Typography>Loading...</Typography>}
+      {!loading && error && <Typography>Error happens!</Typography>}
 
       {!error && !loading && productsByCategory.length > 0 ? (
         <>
@@ -139,7 +139,7 @@ const ProductsByCategory = () => {
             alignItems: "center",
           }}
         >
-          <i>No products in this category.</i>
+          <Typography color="primary">No products in this category.</Typography>
         </Box>
       )}
     </>

@@ -15,10 +15,12 @@ import FilterVintageIcon from "@mui/icons-material/FilterVintage";
 import { useNavigate } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Badge from "@mui/material/Badge";
+import { toast } from "react-toastify";
 
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { logOut } from "../redux/reducers/usersReducer";
+import DarkModeToggle from "./DarkToggleMode";
 
 const pages = [
   {
@@ -75,6 +77,7 @@ const NavBar = ({
 
   const handleLogout = () => {
     dispatch(logOut());
+    toast.info("Logged out!");
   };
 
   return (
@@ -246,6 +249,7 @@ const NavBar = ({
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
+              <DarkModeToggle />
           </Box>
         </Toolbar>
       </Container>

@@ -6,6 +6,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import store from "./redux/store";
+import { ThemeProvider } from "./ThemeProvider";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -13,7 +15,10 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+      <CssBaseline />
     </Provider>
   </React.StrictMode>
 );

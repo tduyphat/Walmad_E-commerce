@@ -1,75 +1,103 @@
 import React, { useEffect, useState } from "react";
+import { SelectChangeEvent, Typography } from "@mui/material";
 
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import {
-  deleteProductAsync,
-  fetchAllProductsAsync,
   sortByPrice,
+  sortByTitle,
 } from "../redux/reducers/productsReducers";
 import Product from "../interfaces/Product";
-import { addToCart } from "../redux/reducers/cartReducer";
+import AppPagination from "../components/AppPagination";
+import CardsContainer from "../components/CardsContainer";
+import FiltersContainer from "../components/FiltersContainer";
+import ProductCard from "../components/ProductCard";
+import ProductsLimiter from "../components/ProductsLimiter";
+import ProductsSorter from "../components/ProductsSorter";
+import SearchBox from "../components/SearchBox";
 
 const Products = () => {
   const { products, loading, error } = useAppSelector(
     (state) => state.productsReducer
   );
-  const cart = useAppSelector((state) => state.cartReducer);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState(8);
+  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [searchField, setSearchField] = useState("");
+  const [sortType, setSortType] = useState("byTitleAsc");
+
   const dispatch = useAppDispatch();
+  const totalPages = Math.ceil(filteredProducts.length / Number(limit));
 
   useEffect(() => {
-    dispatch(fetchAllProductsAsync({ offset: 0, limit: 0 }));
-  }, []);
+    const filtered = products?.filter((product) =>
+      product.title.toLowerCase().includes(searchField)
+    );
+    setFilteredProducts(filtered);
+  }, [products, searchField]);
 
-  const onAddToCart = (payload: Product) => {
-    dispatch(addToCart({ product: payload, quantity: 1 }));
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
-  const onSortAsc = () => {
-    dispatch(sortByPrice("asc"));
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = event.target.value.toLowerCase();
+    setSearchField(searchTerm);
   };
 
-  // const onAddNew = () => {
-  //   dispatch(
-  //     addProduct({
-  //       id: "wdfsdfsd",
-  //       price: 50,
-  //       title: "sdfsdf",
-  //       description: "sdfsd",
-  //     })
-  //   );
-  // };
-
-  const onDelete = (id: number) => {
-    dispatch(deleteProductAsync(id));
-    // dispatch(fetchAllProductsAsync({ offset: 0, limit: 0 }));
+  const handleSortTypeChange = (event: SelectChangeEvent) => {
+    setSortType(event.target.value as string);
   };
 
-  console.log(products);
+  useEffect(() => {
+    if (sortType === "byTitleAsc") {
+      dispatch(sortByTitle("asc"));
+    } else if (sortType === "byTitleDesc") {
+      dispatch(sortByTitle("desc"));
+    } else if (sortType === "byPriceAsc") {
+      dispatch(sortByPrice("asc"));
+    } else {
+      dispatch(sortByPrice("desc"));
+    }
+  }, [sortType]);
+
+  const handleLimitChange = (event: SelectChangeEvent<unknown>) => {
+    const newPageSize = Number(event.target.value);
+    setLimit(newPageSize);
+  };
   return (
-    <div>
-      {/* <button onClick={onAddNew}>Add new product</button> */}
-      <button onClick={onSortAsc}>Sort ASC</button>
-      <p>Items in cart</p>
-      {cart &&
-        cart.map((item) => (
-          <div key={item.id}>
-            <li>
-              <p>{item.title}</p>
-              <p>{item.quantity}</p>
-            </li>
-          </div>
-        ))}
-      {loading && <p>Loading...</p>}
-      {products &&
-        products.map((p) => (
-          <div key={p.id}>
-            {p.title} {p.price}
-            <button onClick={() => onAddToCart(p)}>Add to cart</button>
-            <button onClick={() => onDelete(p.id)}>delete product</button>
-          </div>
-        ))}
-    </div>
+    <>
+      {!error && loading && <Typography>Loading...</Typography>}
+      {!loading && error && <Typography>Error happens!</Typography>}
+
+      {!error && !loading && products && (
+        <>
+          <FiltersContainer>
+            <SearchBox handleSearch={handleSearch} />
+            <ProductsLimiter
+              limit={limit.toString()}
+              handleLimitChange={handleLimitChange}
+            />
+            <ProductsSorter
+              sortType={sortType}
+              handleSortTypeChange={handleSortTypeChange}
+            />
+          </FiltersContainer>
+          <CardsContainer>
+            {filteredProducts
+              .slice((currentPage - 1) * limit, currentPage * limit)
+              .map((product: Product) => (
+                <ProductCard key={product.id} {...product} />
+              ))}
+          </CardsContainer>
+          <AppPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </>
+      )}
+    </>
   );
 };
 
