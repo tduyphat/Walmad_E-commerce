@@ -16,6 +16,7 @@ import CheckAuth from "./utils/CheckAuth";
 import useAppDispatch from "./hooks/useAppDispatch";
 import { fetchAllCategoriesAsync } from "./redux/reducers/categoriesReducer";
 import { fetchAllProductsAsync } from "./redux/reducers/productsReducers";
+import { ThemeProvider } from "./ThemeProvider";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -77,7 +78,11 @@ const App = () => {
       ],
     },
   ]);
-  return <RouterProvider router={router} />;
+  return (
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
 };
 
 export default App;
