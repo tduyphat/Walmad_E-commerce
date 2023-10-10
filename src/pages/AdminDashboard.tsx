@@ -1,27 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { SelectChangeEvent } from "@mui/material/Select";
 import { toast } from "react-toastify";
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  Grid,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import { useConfirm } from "material-ui-confirm";
 
 import useAppSelector from "../hooks/useAppSelector";
@@ -39,7 +19,9 @@ import {
   updateProductAsync,
 } from "../redux/reducers/productsReducers";
 import Product from "../interfaces/Product";
-import ImageLinkGenerator from "../components/ImageLinkGenerator";
+import ProductInputForm from "../interfaces/ProductInputForm";
+import ProductForm from "../components/ProductForm";
+import ProductsTable from "../components/ProductsTable";
 
 const AdminDashboard = () => {
   const { products, loading } = useAppSelector(
@@ -49,7 +31,7 @@ const AdminDashboard = () => {
   const [productUpdateId, setProductUpdateId] = useState<number>(1);
   const [editMode, setEditMode] = useState(false);
 
-  const intialForm: any = {
+  const intialForm: ProductInputForm = {
     title: "",
     price: 1,
     description: "",
@@ -205,104 +187,14 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <Box>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              fullWidth
-              id="title"
-              label="Title"
-              name="title"
-              autoFocus
-              value={form?.title}
-              onChange={handleFormChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              fullWidth
-              name="price"
-              label="Price"
-              type="number"
-              id="price"
-              value={form?.price}
-              onChange={handleFormChange}
-              inputProps={{
-                min: 1,
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <FormControl fullWidth>
-              <InputLabel id="categoryId">Category</InputLabel>
-              <Select
-                id="categoryId"
-                value={form?.categoryId.toString()}
-                label="Category"
-                onChange={() => handleFormChange}
-              >
-                {categories.map((category) => (
-                  <MenuItem key={category.id} value={category.id}>
-                    {category.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              name="description"
-              id="description"
-              label="Description"
-              value={form?.description}
-              multiline
-              rows={4}
-              onChange={handleFormChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              name="images"
-              id="images"
-              label="Image URLs"
-              value={form?.images}
-              multiline
-              rows={4}
-              onChange={handleFormChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <ImageLinkGenerator />
-          </Grid>
-          <Container sx={{ display: "flex", justifyContent: "flex-end" }}>
-            {editMode && (
-              <Button
-                onClick={handleCancelEdit}
-                variant="contained"
-                sx={{ mt: 3, mb: 2, marginRight: 2 }}
-              >
-                Cancel
-              </Button>
-            )}
-            <Button
-              onClick={handleSubmit}
-              variant="contained"
-              sx={{ mt: 3, mb: 2, width: 150 }}
-              disabled={
-                form.title === "" ||
-                form.description === "" ||
-                form.images === ""
-                  ? true
-                  : false
-              }
-            >
-              {editMode ? "Edit product" : "Add product"}
-            </Button>
-          </Container>
-        </Grid>
-      </Box>
+      <ProductForm
+        form={form}
+        categories={categories}
+        editMode={editMode}
+        handleFormChange={handleFormChange}
+        handleSubmit={handleSubmit}
+        handleCancelEdit={handleCancelEdit}
+      />
       {!products && loading && <Typography>Loading...</Typography>}
       {!loading && products && (
         <>
@@ -317,55 +209,14 @@ const AdminDashboard = () => {
               handleSortTypeChange={handleSortTypeChange}
             />
           </FiltersContainer>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Title</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Category</TableCell>
-                  <TableCell>Images</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredProducts
-                  .slice((currentPage - 1) * limit, currentPage * limit)
-                  .map((product) => (
-                    <TableRow key={product.id}>
-                      <TableCell>{product.id}</TableCell>
-                      <TableCell>{product.title}</TableCell>
-                      <TableCell>{product.price}</TableCell>
-                      <TableCell>{product.description}</TableCell>
-                      <TableCell>{product.category.name}</TableCell>
-                      <TableCell>
-                        {product.images.map((image, index) => (
-                          <p key={index}>{image}</p>
-                        ))}
-                      </TableCell>
-                      <TableCell>
-                        <IconButton
-                          color="warning"
-                          onClick={() => switchToEditMode(product)}
-                          disabled={editMode ? true : false}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton
-                          color="error"
-                          onClick={() => handleDelete(product.id)}
-                          disabled={editMode ? true : false}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <ProductsTable
+            filteredProducts={filteredProducts}
+            currentPage={currentPage}
+            limit={limit}
+            editMode={editMode}
+            switchToEditMode={switchToEditMode}
+            handleDelete={handleDelete}
+          />
         </>
       )}
       <AppPagination
