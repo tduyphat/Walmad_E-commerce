@@ -118,7 +118,6 @@ const Register = () => {
                   label="Password"
                   type="password"
                   id="password"
-                  autoComplete="current-password"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handlePasswordChange(e)
                   }

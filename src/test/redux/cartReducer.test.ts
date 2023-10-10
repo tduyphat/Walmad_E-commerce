@@ -1,67 +1,48 @@
-import {
+import cartReducer, {
   addToCart,
-  removeOneFromCart,
+  increaseQuantity,
+  decreaseQuantity,
+  removeFromCart,
 } from "../../redux/reducers/cartReducer";
-import cartReducer from "../../redux/reducers/cartReducer";
-import CartItem from "../../interfaces/CartItem";
+import { cartData } from "../data/cartData";
+import { productsData } from "../data/productsData";
 
-describe("cartReducer", () => {
-  let initialState: CartItem[];
-
-  beforeEach(() => {
-    initialState = [
-      {
-        id: 1,
-        title: "Product 1",
-        price: 10.0,
-        description: "Description for Product 1",
-        category: { id: 1, name: "Category 1", image: "image1.jpg" },
-        images: ["image1.jpg"],
-        quantity: 2,
-      },
-      {
-        id: 2,
-        title: "Product 2",
-        price: 15.0,
-        description: "Description for Product 2",
-        category: { id: 2, name: "Category 2", image: "image2.jpg" },
-        images: ["image2.jpg"],
-        quantity: 3,
-      },
-    ];
+describe("Test cartReducer normal action", () => {
+  test("Should add new product to cart", () => {
+    const cart = cartReducer(
+      cartData,
+      addToCart({ product: productsData[2], quantity: 1 })
+    );
+    expect(cart.length).toBe(3);
   });
 
-  it("should handle ADD_TO_CART", () => {
-    const action = addToCart({
-      product: {
-        id: 3,
-        title: "Product 3",
-        price: 20,
-        description: "Description for Product 3",
-        category: { id: 3, name: "Category 3", image: "image3.jpg" },
-        images: ["image3.jpg"],
-      },
-      quantity: 1,
-    });
-    const newState = cartReducer(initialState, action);
-
-    expect(newState).toHaveLength(3);
-    expect(newState[2]).toEqual({
-      id: 3,
-      title: "Product 3",
-      price: 20,
-      description: "Description for Product 3",
-      category: { id: 3, name: "Category 3", image: "image3.jpg"},
-      images: ["image3.jpg"],
-      quantity: 1,
-    });
+  test("Should not add but increase same product in cart", () => {
+    const cart = cartReducer(
+      cartData,
+      addToCart({ product: productsData[1], quantity: 2 })
+    );
+    expect(cart.length).toBe(2);
+    expect(cart[1].quantity).toBe(4);
   });
 
-  it("should handle REMOVE_ONE_FROM_CART", () => {
-    const action = removeOneFromCart(2);
-    const newState = cartReducer(initialState, action);
+  test("Should increase product quantity", () => {
+    const cart = cartReducer(cartData, increaseQuantity(1));
+    expect(cart[0].quantity).toBe(2);
+  });
 
-    expect(newState).toHaveLength(2);
-    expect(newState[1].quantity).toBe(2);
+  test("Should decrease product quantity", () => {
+    const cart = cartReducer(cartData, decreaseQuantity(2));
+    expect(cart[1].quantity).toBe(1);
+  });
+
+  test("Should remove when quantity is 0", () => {
+    const cart = cartReducer(cartData, decreaseQuantity(1));
+    expect(cart.length).toBe(1);
+  });
+  
+  test("Should remove product from cart", () => {
+    const cart = cartReducer(cartData, removeFromCart(2));
+    expect(cart.length).toBe(1);
+    expect(cart[0].id).toBe(1);
   });
 });

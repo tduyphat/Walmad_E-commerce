@@ -3,19 +3,24 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 import { useDispatch } from "react-redux";
-import { addOneToCart, removeOneFromCart } from "../redux/reducers/cartReducer";
+import {
+  increaseQuantity,
+  decreaseQuantity,
+  removeFromCart,
+} from "../redux/reducers/cartReducer";
 import CartItem from "../interfaces/CartItem";
+import { Button } from "@mui/material";
 
 const ItemInCart = (item: CartItem) => {
   const dispatch = useDispatch();
 
   return (
     <Paper
-      sx={{backgroundColor: "inherit"}}
+      sx={{ backgroundColor: "inherit" }}
       elevation={0}
       style={{ paddingBottom: 20 }}
     >
@@ -31,7 +36,7 @@ const ItemInCart = (item: CartItem) => {
             <IconButton
               size="small"
               color="primary"
-              onClick={() => dispatch(removeOneFromCart(item.id))}
+              onClick={() => dispatch(decreaseQuantity(item.id))}
             >
               <ChevronLeftIcon />
             </IconButton>
@@ -39,11 +44,18 @@ const ItemInCart = (item: CartItem) => {
             <IconButton
               size="small"
               color="primary"
-              onClick={() => dispatch(addOneToCart(item.id))}
+              onClick={() => dispatch(increaseQuantity(item.id))}
             >
               <ChevronRightIcon />
             </IconButton>
           </Grid>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={() => dispatch(removeFromCart(item.id))}
+          >
+            Remove
+          </Button>
         </Grid>
         <Grid item xs={12} md={6}>
           <img

@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
-import {
-  Button,
-  Typography,
-  IconButton,
-  TextField,
-} from "@mui/material";
+import axios, { AxiosError } from "axios";
+import { Button, Typography, IconButton, TextField } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
 
 const ImageLinkGenerator: React.FC = () => {
@@ -25,7 +20,7 @@ const ImageLinkGenerator: React.FC = () => {
       formData.append("file", selectedFile);
 
       try {
-        const response = await axios.post(
+        const result = await axios.post(
           "https://api.escuelajs.co/api/v1/files/upload",
           formData,
           {
@@ -35,11 +30,12 @@ const ImageLinkGenerator: React.FC = () => {
           }
         );
 
-        if (response.data.location) {
-          setImageLink(response.data.location);
+        if (result.data.location) {
+          setImageLink(result.data.location);
         }
-      } catch (error) {
-        console.error("Error uploading image:", error);
+      } catch (e) {
+        const error = e as AxiosError;
+        toast.error(error.message);
       }
     }
   };
@@ -51,10 +47,9 @@ const ImageLinkGenerator: React.FC = () => {
 
   const handleCopyLink = () => {
     if (imageLink) {
-      navigator.clipboard.writeText(imageLink)
-        .then(() => {
-          toast.info("Link copied to clipboard!")
-        })
+      navigator.clipboard.writeText(imageLink).then(() => {
+        toast.info("Link copied to clipboard!");
+      });
     }
   };
 

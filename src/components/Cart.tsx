@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 import ItemInCart from "./ItemInCart";
 import useAppSelector from "../hooks/useAppSelector";
@@ -8,7 +8,9 @@ const Cart = () => {
   const cart = useAppSelector((state) => state.cartReducer);
   return (
     <Box style={{ width: 500, padding: 20 }}>
-      <Typography variant="h4" gutterBottom>Your Cart</Typography>
+      <Typography variant="h4" gutterBottom>
+        Your Cart
+      </Typography>
       {cart.length === 0 ? (
         <Typography variant="body1">No items in cart.</Typography>
       ) : null}
@@ -19,6 +21,9 @@ const Cart = () => {
         Total: €{" "}
         {cart.reduce((acc, curr) => acc + curr.price * curr.quantity, 0)}
       </Typography>
+      <Button sx={{ marginTop: 5 }} size="large" fullWidth variant="contained">
+        Check Out
+      </Button>
     </Box>
   );
 };
