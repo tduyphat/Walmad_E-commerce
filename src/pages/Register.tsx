@@ -9,9 +9,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import axios, { AxiosError } from "axios";
-
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import ImageLinkGenerator from "../components/ImageLinkGenerator";
 
 interface ErrorResponse {
   message: string[];
@@ -135,6 +136,9 @@ const Register = () => {
                     handleAvatarChange(e)
                   }
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <ImageLinkGenerator />
               </Grid>
             </Grid>
             <Button

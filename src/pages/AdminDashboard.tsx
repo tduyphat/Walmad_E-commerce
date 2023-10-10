@@ -39,6 +39,7 @@ import {
   updateProductAsync,
 } from "../redux/reducers/productsReducers";
 import Product from "../interfaces/Product";
+import ImageLinkGenerator from "../components/ImageLinkGenerator";
 
 const AdminDashboard = () => {
   const { products, loading } = useAppSelector(
@@ -271,6 +272,9 @@ const AdminDashboard = () => {
               rows={4}
               onChange={handleFormChange}
             />
+          </Grid>
+          <Grid item xs={12}>
+            <ImageLinkGenerator />
           </Grid>
           <Container sx={{ display: "flex", justifyContent: "flex-end" }}>
             {editMode && (
