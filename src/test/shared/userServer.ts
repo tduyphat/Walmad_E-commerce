@@ -3,9 +3,6 @@ import { setupServer } from "msw/node";
 import { usersData } from "../data/usersData";
 export const access_token = "my-access-token";
 export const handlers = [
-  rest.get("https://api.escuelajs.co/api/v1/users", (req, res, ctx) => {
-    return res(ctx.json(usersData));
-  }),
   rest.post(
     "https://api.escuelajs.co/api/v1/auth/login",
     async (req, res, ctx) => {

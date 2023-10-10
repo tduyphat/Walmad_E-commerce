@@ -9,19 +9,6 @@ const initialState: UsersReducerState = {
   users: [],
 };
 
-export const fetchUsersAsync = createAsyncThunk<
-  User[],
-  void,
-  { rejectValue: string }
->("fetchUsersAsync", async (_, { rejectWithValue }) => {
-  try {
-    const result = await axios.get("https://api.escuelajs.co/api/v1/users");
-    return result.data;
-  } catch (e) {
-    const error = e as Error;
-    return rejectWithValue(error.message);
-  }
-});
 export const loginUserAsync = createAsyncThunk<
   User,
   UserCredentials,
@@ -49,6 +36,7 @@ export const loginUserAsync = createAsyncThunk<
     return rejectWithValue(error.message);
   }
 });
+
 export const authenticateUserAsync = createAsyncThunk<
   User,
   string,
@@ -69,6 +57,7 @@ export const authenticateUserAsync = createAsyncThunk<
     return rejectWithValue(error.message);
   }
 });
+
 const userSlice = createSlice({
   name: "userSlice",
   initialState,
@@ -80,13 +69,6 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    //fetch all users
-    builder.addCase(fetchUsersAsync.fulfilled, (state, action) => {
-      state.users = action.payload;
-    });
-    builder.addCase(fetchUsersAsync.rejected, (state, action) => {
-      state.error = action.payload;
-    });
     //login
     builder.addCase(loginUserAsync.fulfilled, (state, action) => {
       state.currentUser = action.payload;

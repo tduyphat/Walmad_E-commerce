@@ -1,5 +1,3 @@
-import Category from "./Category";
-
 interface CreateProductInput {
   title: string;
   categoryId: number;

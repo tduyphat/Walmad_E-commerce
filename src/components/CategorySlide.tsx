@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import Carousel from "react-material-ui-carousel";
-import { Box, Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";

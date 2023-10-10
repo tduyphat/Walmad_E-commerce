@@ -1,6 +1,5 @@
 import {
   authenticateUserAsync,
-  fetchUsersAsync,
   logOut,
   loginUserAsync,
 } from "../../redux/reducers/usersReducer";
@@ -21,11 +20,6 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe("Test usersReducer async actions", () => {
-  test("Should fetch all users", async () => {
-    await store.dispatch(fetchUsersAsync());
-    expect(store.getState().usersReducer.users.length).toBe(3);
-  });
-
   test("Should login user with right credential", async () => {
     await store.dispatch(
       loginUserAsync({ email: "john@mail.com", password: "changeme" })
