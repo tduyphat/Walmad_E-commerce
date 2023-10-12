@@ -13,9 +13,13 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { InputAdornment, IconButton } from "@mui/material";
+import { GoogleLogin } from "@react-oauth/google";
+import { GoogleOAuthProvider, CredentialResponse } from "@react-oauth/google";
+import jwt from "jwt-decode";
 
 import ImageLinkGenerator from "../components/ImageLinkGenerator";
 import UserRegisterInput from "../interfaces/UserRegisterInput";
+import GoogleProfile from "../interfaces/GoogleProfile";
 
 interface ErrorResponse {
   message: string[];
@@ -33,6 +37,22 @@ const Register = () => {
   const [form, setForm] = useState(intialForm);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const clientId = process.env.CLIENT_ID!;
+
+  const handleGoogleLogin = (cred: CredentialResponse) => {
+    const token = cred.credential;
+    if (token) {
+      const userProfile = jwt<GoogleProfile>(token);
+      setForm({
+        ...form,
+        name: userProfile.name,
+        email: userProfile.email,
+        avatar: userProfile.picture,
+      });
+    } else {
+      toast.error("Can't get data from your Google account!");
+    }
+  };
 
   const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [event.target.name]: event.target.value });
@@ -84,7 +104,7 @@ const Register = () => {
                   id="name"
                   label="Full name"
                   name="name"
-                  autoComplete="name"
+                  value={form.name}
                   autoFocus
                   onChange={handleFormChange}
                 />
@@ -95,7 +115,7 @@ const Register = () => {
                   id="email"
                   label="Email"
                   name="email"
-                  autoComplete="email"
+                  value={form.email}
                   autoFocus
                   onChange={handleFormChange}
                 />
@@ -105,6 +125,7 @@ const Register = () => {
                   fullWidth
                   name="password"
                   label="Password"
+                  value={form.password}
                   type={showPassword ? "text" : "password"}
                   id="password"
                   InputProps={{
@@ -128,7 +149,7 @@ const Register = () => {
                   id="avatar"
                   label="Avatar URL"
                   name="avatar"
-                  autoComplete="avatar"
+                  value={form.avatar}
                   autoFocus
                   onChange={handleFormChange}
                 />
@@ -137,22 +158,36 @@ const Register = () => {
                 <ImageLinkGenerator />
               </Grid>
             </Grid>
-            <Button
-              onClick={handleSubmit}
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              disabled={
-                form.name === "" ||
-                form.email === "" ||
-                form.password === "" ||
-                form.avatar === ""
-                  ? true
-                  : false
-              }
-            >
-              Sign In
-            </Button>
+            <Grid container spacing={2} sx={{ mt: 3, mb: 2 }}>
+              <Grid item xs={12} sm={6}>
+                <GoogleOAuthProvider clientId={clientId}>
+                  <GoogleLogin
+                    onSuccess={handleGoogleLogin}
+                    onError={() => {
+                      toast.error("Login failed!");
+                    }}
+                  />
+                </GoogleOAuthProvider>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Button
+                  size="large"
+                  fullWidth
+                  onClick={handleSubmit}
+                  variant="contained"
+                  disabled={
+                    form.name === "" ||
+                    form.email === "" ||
+                    form.password === "" ||
+                    form.avatar === ""
+                      ? true
+                      : false
+                  }
+                >
+                  Sign In
+                </Button>
+              </Grid>
+            </Grid>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to="/login">Already have an account? Sign in</Link>

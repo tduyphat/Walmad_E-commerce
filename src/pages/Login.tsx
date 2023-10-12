@@ -69,6 +69,7 @@ const SignIn = () => {
             id="email"
             label="Email Address"
             name="email"
+            value={form.email}
             autoComplete="email"
             autoFocus
             onChange={handleFormChange}
@@ -78,6 +79,7 @@ const SignIn = () => {
             fullWidth
             name="password"
             label="Password"
+            value={form.password}
             type={showPassword ? "text" : "password"}
             id="password"
             autoComplete="current-password"

@@ -16,6 +16,7 @@ export default function Home() {
   );
   const { products } = useAppSelector((state) => state.productsReducer);
   const [limit, setLimit] = useState(4);
+  const remainingCategories = categories ? categories.length - limit : 0;
   const handleSeeMore = () => {
     setLimit(limit + 4);
   };
@@ -40,9 +41,11 @@ export default function Home() {
         justifyContent="center"
         sx={{ marginTop: 2, marginBottom: 2 }}
       >
-        <Button onClick={handleSeeMore} variant="outlined">
-          See More
-        </Button>
+        {remainingCategories > 0 && (
+          <Button onClick={handleSeeMore} variant="outlined">
+            See More
+          </Button>
+        )}
       </Grid>
       <Typography variant="h4" color="primary" gutterBottom>
         Most Recent Products
