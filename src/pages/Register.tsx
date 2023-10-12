@@ -184,7 +184,7 @@ const Register = () => {
                       : false
                   }
                 >
-                  Sign In
+                  Sign Up
                 </Button>
               </Grid>
             </Grid>
