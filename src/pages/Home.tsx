@@ -35,7 +35,11 @@ export default function Home() {
           </Grid>
         ))}
       </Grid>
-      <Grid container justifyContent="center" sx={{ marginTop: 2, marginBottom: 2 }}>
+      <Grid
+        container
+        justifyContent="center"
+        sx={{ marginTop: 2, marginBottom: 2 }}
+      >
         <Button onClick={handleSeeMore} variant="outlined">
           See More
         </Button>

@@ -4,9 +4,14 @@ import axios, { AxiosError } from "axios";
 
 import ProductDetailsCard from "../components/ProductDetailsCard";
 import Product from "../interfaces/Product";
+import { Typography } from "@mui/material";
+import CardsContainer from "../components/CardsContainer";
+import ProductCard from "../components/ProductCard";
+import useAppSelector from "../hooks/useAppSelector";
 
 const ProductDetails = () => {
   const [productDetails, setProductDetails] = useState<Product>();
+  const { products } = useAppSelector((state) => state.productsReducer);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
@@ -35,7 +40,7 @@ const ProductDetails = () => {
   };
 
   return (
-    <div>
+    <>
       {!productDetails && !error && loading && <p>Loading...</p>}
       {!productDetails && !loading && error && <p>Error happens!</p>}
       {!error && !loading && productDetails && (
@@ -46,7 +51,25 @@ const ProductDetails = () => {
           handleAmountChange={handleAmountChange}
         />
       )}
-    </div>
+      <Typography
+        variant="h4"
+        color="primary"
+        sx={{ marginTop: 10 }}
+        gutterBottom
+      >
+        Similar Products
+      </Typography>
+      <CardsContainer>
+        {products
+          .filter(
+            (product) => product.category.id === productDetails?.category.id
+          )
+          .slice(0, 4)
+          .map((product: Product) => (
+            <ProductCard key={product.id} {...product} />
+          ))}
+      </CardsContainer>
+    </>
   );
 };
 

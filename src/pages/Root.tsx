@@ -9,6 +9,7 @@ import { ConfirmProvider } from "material-ui-confirm";
 import NavBar from "../components/NavBar";
 import Cart from "../components/Cart";
 import { useTheme } from "../ThemeProvider";
+import StickyFooter from "../components/Footer";
 
 const Root = () => {
   const { themeMode } = useTheme();
@@ -34,6 +35,7 @@ const Root = () => {
         >
           <Outlet />
         </Container>
+        <StickyFooter />
       </ConfirmProvider>
     </div>
   );

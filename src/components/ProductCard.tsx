@@ -16,7 +16,6 @@ const ProductCard: React.FC<Product> = (product) => {
     <Card sx={{ borderRadius: "0.5em" }}>
       <CardActionArea
         sx={{
-          width: 300,
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
