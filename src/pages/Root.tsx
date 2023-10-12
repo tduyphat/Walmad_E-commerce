@@ -24,7 +24,7 @@ const Root = () => {
           open={cartOpen}
           onClose={() => setCartOpen(false)}
         >
-          <Cart />
+          <Cart setCartOpen={setCartOpen}/>
         </Drawer>
         <NavBar setCartOpen={setCartOpen} />
         <Container

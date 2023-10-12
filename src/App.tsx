@@ -18,6 +18,7 @@ import { fetchAllCategoriesAsync } from "./redux/reducers/categoriesReducer";
 import { fetchAllProductsAsync } from "./redux/reducers/productsReducers";
 import { authenticateUserAsync } from "./redux/reducers/usersReducer";
 import { ThemeProvider } from "./ThemeProvider";
+import CheckOut from "./pages/CheckOut";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -83,12 +84,16 @@ const App = () => {
             </CheckAuth>
           ),
         },
+        {
+          path: "/checkout",
+          element: <CheckOut />,
+        },
       ],
     },
   ]);
   return (
     <ThemeProvider>
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
     </ThemeProvider>
   );
 };
