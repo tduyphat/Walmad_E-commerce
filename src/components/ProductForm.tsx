@@ -40,7 +40,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
           <TextField
             fullWidth
             name="price"
-            label="Price"
+            label="Price (€)"
             type="number"
             id="price"
             value={price}
@@ -89,6 +89,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             multiline
             rows={4}
             onChange={handleFormChange}
+            helperText="Input format: url1, url2, url3"
           />
         </Grid>
         <Grid item xs={12}>

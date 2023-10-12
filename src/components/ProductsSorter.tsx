@@ -17,9 +17,8 @@ const ProductsSorter: React.FC<ProductsSorterProps> = ({
         <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
         <Select
           labelId="demo-simple-select-label"
-          id="demo-simple-select"
           value={sortType}
-          label="Limit returns"
+          label="Sort By"
           onChange={handleSortTypeChange}
         >
           <MenuItem value={"byTitleAsc"}>Name: A-Z</MenuItem>

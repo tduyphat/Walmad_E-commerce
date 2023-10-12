@@ -16,6 +16,9 @@ import { useNavigate } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Badge from "@mui/material/Badge";
 import { toast } from "react-toastify";
+import LogoutIcon from "@mui/icons-material/Logout";
+import TocIcon from "@mui/icons-material/Toc";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
@@ -77,6 +80,7 @@ const NavBar = ({
 
   const handleLogout = () => {
     dispatch(logOut());
+    localStorage.removeItem("access_token");
     toast.info("Logged out!");
   };
 
@@ -204,6 +208,9 @@ const NavBar = ({
                   onClose={handleCloseUserMenu}
                 >
                   <MenuItem onClick={handleCloseUserMenu}>
+                    <AccountCircleIcon
+                      sx={{ marginRight: 1, fontSize: "medium" }}
+                    />
                     <Typography
                       textAlign="center"
                       onClick={() => navigate("/profile")}
@@ -213,6 +220,7 @@ const NavBar = ({
                   </MenuItem>
                   {currentUser?.role === "admin" && (
                     <MenuItem onClick={handleCloseUserMenu}>
+                      <TocIcon sx={{ marginRight: 1, fontSize: "medium" }} />
                       <Typography
                         onClick={() => navigate("/admin")}
                         textAlign="center"
@@ -222,6 +230,7 @@ const NavBar = ({
                     </MenuItem>
                   )}
                   <MenuItem onClick={handleCloseUserMenu}>
+                    <LogoutIcon sx={{ marginRight: 1, fontSize: "medium" }} />
                     <Typography onClick={handleLogout} textAlign="center">
                       Logout
                     </Typography>
@@ -249,7 +258,7 @@ const NavBar = ({
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
-              <DarkModeToggle />
+            <DarkModeToggle />
           </Box>
         </Toolbar>
       </Container>

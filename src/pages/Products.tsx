@@ -3,10 +3,7 @@ import { SelectChangeEvent, Typography } from "@mui/material";
 
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
-import {
-  sortByPrice,
-  sortByTitle,
-} from "../redux/reducers/productsReducers";
+import { sortByPrice, sortByTitle } from "../redux/reducers/productsReducers";
 import Product from "../interfaces/Product";
 import AppPagination from "../components/AppPagination";
 import CardsContainer from "../components/CardsContainer";
@@ -67,6 +64,9 @@ const Products = () => {
   };
   return (
     <>
+      <Typography variant="h3" color="primary">
+        All Products
+      </Typography>
       {!error && loading && <Typography>Loading...</Typography>}
       {!loading && error && <Typography>Error happens!</Typography>}
 

@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 const ImageLinkGenerator: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [imageLink, setImageLink] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -16,8 +17,18 @@ const ImageLinkGenerator: React.FC = () => {
       const selectedFile = event.target.files[0];
       setFile(selectedFile);
 
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+  const handleUploadImage = async () => {
+    if (file) {
       const formData = new FormData();
-      formData.append("file", selectedFile);
+      formData.append("file", file);
 
       try {
         const result = await axios.post(
@@ -43,6 +54,7 @@ const ImageLinkGenerator: React.FC = () => {
   const handleRemoveImage = () => {
     setFile(null);
     setImageLink(null);
+    setImagePreview(null);
   };
 
   const handleCopyLink = () => {
@@ -57,26 +69,31 @@ const ImageLinkGenerator: React.FC = () => {
     <>
       <Typography variant="h6">Image URL Generator</Typography>
       {!file ? (
-        <label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            style={{ display: "none" }}
-          />
-          <Button variant="contained" component="span" size="small">
-            Choose File
-          </Button>
-        </label>
+        <>
+          <label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+            />
+            <Button variant="contained" component="span" size="small">
+              Choose File
+            </Button>
+          </label>
+        </>
       ) : (
         <div>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <Typography>{file.name}</Typography>
-            <IconButton onClick={handleRemoveImage} color="error">
-              <DeleteIcon />
-            </IconButton>
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Image Preview"
+                style={{ maxHeight: 100, maxWidth: 100, marginRight: 10 }}
+              />
+            )}
           </div>
-          {imageLink && (
+          {imageLink ? (
             <>
               <Typography variant="subtitle1">Image URL:</Typography>
               <TextField
@@ -91,6 +108,25 @@ const ImageLinkGenerator: React.FC = () => {
                   ),
                 }}
               />
+            </>
+          ) : (
+            <>
+              <Button
+                variant="contained"
+                onClick={handleUploadImage}
+                size="small"
+                sx={{ marginTop: 1 }}
+              >
+                Upload
+              </Button>
+              <Button
+                onClick={handleRemoveImage}
+                size="small"
+                color="error"
+                sx={{ marginTop: 1, marginLeft: 1 }}
+              >
+                Remove
+              </Button>
             </>
           )}
         </div>

@@ -27,13 +27,13 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Price</TableCell>
-            <TableCell>Description</TableCell>
-            <TableCell>Category</TableCell>
-            <TableCell>Images</TableCell>
-            <TableCell></TableCell>
+            <TableCell style={{ width: "5%" }}>ID</TableCell>
+            <TableCell style={{ width: "15%" }}>Title</TableCell>
+            <TableCell style={{ width: "5%" }}>Price</TableCell>
+            <TableCell style={{ width: "20%" }}>Description</TableCell>
+            <TableCell style={{ width: "15%" }}>Category</TableCell>
+            <TableCell style={{ width: "30%" }}>Images</TableCell>
+            <TableCell style={{ width: "10%" }}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -76,3 +76,4 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
 };
 
 export default ProductsTable;
+

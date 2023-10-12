@@ -21,9 +21,16 @@ const Cart = () => {
         Total: €{" "}
         {cart.reduce((acc, curr) => acc + curr.price * curr.quantity, 0)}
       </Typography>
-      <Button sx={{ marginTop: 5 }} size="large" fullWidth variant="contained">
-        Check Out
-      </Button>
+      {cart.length > 0 && (
+        <Button
+          sx={{ marginTop: 5 }}
+          size="large"
+          fullWidth
+          variant="contained"
+        >
+          Check Out
+        </Button>
+      )}
     </Box>
   );
 };

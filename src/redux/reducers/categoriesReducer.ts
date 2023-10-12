@@ -8,7 +8,6 @@ const initialState: {
   loading: boolean;
 } = {
   categories: [],
-  error: "",
   loading: false,
 };
 

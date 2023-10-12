@@ -5,9 +5,7 @@ import User from "../../interfaces/User";
 import UserCredentials from "../../interfaces/UserCredentials";
 import UsersReducerState from "../../interfaces/UsersReducerState";
 
-const initialState: UsersReducerState = {
-  users: [],
-};
+const initialState: UsersReducerState = {};
 
 export const loginUserAsync = createAsyncThunk<
   User,
@@ -20,6 +18,7 @@ export const loginUserAsync = createAsyncThunk<
       cred
     );
     const { access_token } = result.data;
+    localStorage.setItem("access_token", access_token);
     const authenticatedResult = await dispatch(
       authenticateUserAsync(access_token)
     );
@@ -63,7 +62,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logOut: (state) => {
-      state.users = [];
       state.currentUser = undefined;
       state.error = undefined;
     },

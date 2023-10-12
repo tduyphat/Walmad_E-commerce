@@ -17,9 +17,8 @@ const ProductsLimiter: React.FC<ProductsLimiterProps> = ({
         <InputLabel id="demo-simple-select-label">Products/Page</InputLabel>
         <Select
           labelId="demo-simple-select-label"
-          id="demo-simple-select"
           value={limit}
-          label="Limit returns"
+          label="Products/Page"
           onChange={handleLimitChange}
         >
           <MenuItem value={"8"}>8</MenuItem>

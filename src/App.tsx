@@ -16,10 +16,18 @@ import CheckAuth from "./utils/CheckAuth";
 import useAppDispatch from "./hooks/useAppDispatch";
 import { fetchAllCategoriesAsync } from "./redux/reducers/categoriesReducer";
 import { fetchAllProductsAsync } from "./redux/reducers/productsReducers";
+import { authenticateUserAsync } from "./redux/reducers/usersReducer";
 import { ThemeProvider } from "./ThemeProvider";
 
 const App = () => {
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const access_token = localStorage.getItem("access_token");
+    if (access_token) {
+      dispatch(authenticateUserAsync(access_token));
+    }
+  }, []);
 
   useEffect(() => {
     dispatch(fetchAllCategoriesAsync());

@@ -33,7 +33,7 @@ export function ThemeProvider({ children }: ThemeProviderProps): JSX.Element {
     palette: {
       mode: 'light',
       primary: {
-        main: '#007bff',
+        main: '#52796f',
       },
       background: {
         default: '#f5f5f5',
@@ -46,6 +46,9 @@ export function ThemeProvider({ children }: ThemeProviderProps): JSX.Element {
       mode: 'dark',
       primary: {
         main: '#84bd00',
+      },
+      background: {
+        default: "#333",
       },
     },
   });
