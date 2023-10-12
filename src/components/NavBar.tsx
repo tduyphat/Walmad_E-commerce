@@ -254,7 +254,13 @@ const NavBar = ({
               </>
             )}
             <IconButton onClick={() => setCartOpen(true)}>
-              <Badge badgeContent={cart.length} color="error">
+              <Badge
+                badgeContent={cart.reduce(
+                  (acc, curr) => acc + curr.quantity,
+                  0
+                )}
+                color="error"
+              >
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>

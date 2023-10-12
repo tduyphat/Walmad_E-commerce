@@ -11,8 +11,11 @@ import Container from "@mui/material/Container";
 import axios, { AxiosError } from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { InputAdornment, IconButton } from "@mui/material";
 
 import ImageLinkGenerator from "../components/ImageLinkGenerator";
+import UserRegisterInput from "../interfaces/UserRegisterInput";
 
 interface ErrorResponse {
   message: string[];
@@ -21,40 +24,30 @@ interface ErrorResponse {
 }
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [avatar, setAvatar] = useState("");
+  const intialForm: UserRegisterInput = {
+    name: "",
+    email: "",
+    password: "",
+    avatar: "",
+  };
+  const [form, setForm] = useState(intialForm);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setName(event.target.value);
+  const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [event.target.name]: event.target.value });
   };
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setPassword(event.target.value);
-  };
-
-  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setAvatar(event.target.value);
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async () => {
     try {
-      const result = await axios.post("https://api.escuelajs.co/api/v1/users", {
-        name: name,
-        email: email,
-        password: password,
-        avatar: avatar,
-      });
+      const result = await axios.post(
+        "https://api.escuelajs.co/api/v1/users",
+        form
+      );
       if (result.status === 201) {
         toast.success("Account created successfully!");
         navigate("/login");
@@ -93,9 +86,7 @@ const Register = () => {
                   name="name"
                   autoComplete="name"
                   autoFocus
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleNameChange(e)
-                  }
+                  onChange={handleFormChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -106,9 +97,7 @@ const Register = () => {
                   name="email"
                   autoComplete="email"
                   autoFocus
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleEmailChange(e)
-                  }
+                  onChange={handleFormChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -116,11 +105,21 @@ const Register = () => {
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handlePasswordChange(e)
-                  }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleTogglePasswordVisibility}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  onChange={handleFormChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -131,9 +130,7 @@ const Register = () => {
                   name="avatar"
                   autoComplete="avatar"
                   autoFocus
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleAvatarChange(e)
-                  }
+                  onChange={handleFormChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -146,7 +143,10 @@ const Register = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               disabled={
-                name === "" || email === "" || password === "" || avatar === ""
+                form.name === "" ||
+                form.email === "" ||
+                form.password === "" ||
+                form.avatar === ""
                   ? true
                   : false
               }

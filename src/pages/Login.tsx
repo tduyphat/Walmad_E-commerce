@@ -10,26 +10,33 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { InputAdornment, IconButton } from "@mui/material";
 
 import useAppDispatch from "../hooks/useAppDispatch";
 import { loginUserAsync } from "../redux/reducers/usersReducer";
+import UserCredentials from "../interfaces/UserCredentials";
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const intialForm: UserCredentials = {
+    email: "",
+    password: "",
+  };
+  const [form, setForm] = useState(intialForm);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
+  const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [event.target.name]: event.target.value });
   };
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async () => {
-    const result = await dispatch(loginUserAsync({ email, password }));
+    const result = await dispatch(loginUserAsync(form));
     if (result.payload?.hasOwnProperty("email")) {
       navigate("/");
       toast.success("Logged in successfully!");
@@ -64,28 +71,36 @@ const SignIn = () => {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleEmailChange(e)
-            }
+            onChange={handleFormChange}
           />
           <TextField
             margin="normal"
             fullWidth
             name="password"
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             autoComplete="current-password"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handlePasswordChange(e)
-            }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleTogglePasswordVisibility}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            onChange={handleFormChange}
           />
           <Button
             onClick={handleSubmit}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            disabled={email === "" || password === "" ? true : false}
+            disabled={form.email === "" || form.password === "" ? true : false}
           >
             Sign In
           </Button>
@@ -97,9 +112,7 @@ const SignIn = () => {
             }}
           >
             <Grid item>
-              <Link to="/register">
-                Don't have an account? Sign Up
-              </Link>
+              <Link to="/register">Don't have an account? Sign Up</Link>
             </Grid>
           </Grid>
         </Box>
