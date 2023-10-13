@@ -5,8 +5,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 import useAppSelector from "../hooks/useAppSelector";
-import AddressFormInput from "../interfaces/AddressFormInput";
-import PaymentFormInput from "../interfaces/PaymentFormInput";
 import ReviewProps from "../interfaces/ReviewProps";
 
 const Review: React.FC<ReviewProps> = ({ addressForm, paymentForm }) => {

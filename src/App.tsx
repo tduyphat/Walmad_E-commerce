@@ -28,15 +28,15 @@ const App = () => {
     if (access_token) {
       dispatch(authenticateUserAsync(access_token));
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchAllCategoriesAsync());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchAllProductsAsync({ offset: 0, limit: 0 }));
-  }, []);
+  }, [dispatch]);
 
   const router = createBrowserRouter([
     {

@@ -28,35 +28,6 @@ const ProductsByCategory = () => {
 
   const totalPages = Math.ceil(filteredProducts.length / Number(limit));
 
-  const fetchProductsByCategory = async () => {
-    setLoading(true);
-    try {
-      const result = await axios.get(
-        `https://api.escuelajs.co/api/v1/products/?categoryId=${id}`
-      );
-      const products = result.data;
-      products.sort((a: Product, b: Product) => a.title.localeCompare(b.title));
-      setProductsByCategory(products);
-      setLoading(false);
-    } catch (e) {
-      const error = e as AxiosError;
-      setError(error.message);
-    }
-    setLoading(false);
-  };
-
-  const fetchCategoryName = async () => {
-    try {
-      const result = await axios.get(
-        `https://api.escuelajs.co/api/v1/categories/${id}`
-      );
-      setCatgoryName(result.data.name);
-    } catch (e) {
-      const error = e as Error;
-      return error.message;
-    }
-  };
-
   useEffect(() => {
     const filtered = productsByCategory?.filter((product) =>
       product.title.toLowerCase().includes(searchField)
@@ -65,9 +36,39 @@ const ProductsByCategory = () => {
   }, [productsByCategory, searchField]);
 
   useEffect(() => {
+    const fetchProductsByCategory = async () => {
+      setLoading(true);
+      try {
+        const result = await axios.get(
+          `https://api.escuelajs.co/api/v1/products/?categoryId=${id}`
+        );
+        const products = result.data;
+        products.sort((a: Product, b: Product) =>
+          a.title.localeCompare(b.title)
+        );
+        setProductsByCategory(products);
+        setLoading(false);
+      } catch (e) {
+        const error = e as AxiosError;
+        setError(error.message);
+      }
+      setLoading(false);
+    };
+
+    const fetchCategoryName = async () => {
+      try {
+        const result = await axios.get(
+          `https://api.escuelajs.co/api/v1/categories/${id}`
+        );
+        setCatgoryName(result.data.name);
+      } catch (e) {
+        const error = e as Error;
+        return error.message;
+      }
+    };
     fetchProductsByCategory();
     fetchCategoryName();
-  }, []);
+  }, [id]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -101,7 +102,9 @@ const ProductsByCategory = () => {
 
   return (
     <>
-      <Typography variant="h3" color="primary">{categoryName}</Typography>
+      <Typography variant="h3" color="primary">
+        {categoryName}
+      </Typography>
       {!error && loading && <Typography>Loading...</Typography>}
       {!loading && error && <Typography>Error happens!</Typography>}
 

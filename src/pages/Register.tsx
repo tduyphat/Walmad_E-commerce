@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
@@ -37,7 +37,7 @@ const Register = () => {
   const [form, setForm] = useState(intialForm);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const clientId = process.env.CLIENT_ID!;
+  const clientId = process.env.REACT_APP_CLIENT_ID!;
 
   const handleGoogleLogin = (cred: CredentialResponse) => {
     const token = cred.credential;

@@ -82,7 +82,7 @@ const AdminDashboard = () => {
     } else {
       dispatch(sortByPrice("desc"));
     }
-  }, [sortType]);
+  }, [sortType, dispatch]);
 
   const handleLimitChange = (event: SelectChangeEvent<unknown>) => {
     const newPageSize = Number(event.target.value);

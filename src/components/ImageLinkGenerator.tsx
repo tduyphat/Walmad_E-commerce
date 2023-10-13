@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { Button, Typography, IconButton, TextField } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
 
@@ -88,7 +87,7 @@ const ImageLinkGenerator: React.FC = () => {
             {imagePreview && (
               <img
                 src={imagePreview}
-                alt="Image Preview"
+                alt="thumbnail preview"
                 style={{ maxHeight: 100, maxWidth: 100, marginRight: 10 }}
               />
             )}

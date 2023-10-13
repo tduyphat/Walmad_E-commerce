@@ -17,23 +17,22 @@ const ProductDetails = () => {
   const { id } = useParams();
   const [amount, setAmount] = useState(1);
 
-  const fetchProductDetails = async () => {
-    setLoading(true);
-    try {
-      const result = await axios.get(
-        `https://api.escuelajs.co/api/v1/products/${id}`
-      );
-      setProductDetails(result.data);
-    } catch (e) {
-      const error = e as AxiosError;
-      setError(error.message);
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
+    const fetchProductDetails = async () => {
+      setLoading(true);
+      try {
+        const result = await axios.get(
+          `https://api.escuelajs.co/api/v1/products/${id}`
+        );
+        setProductDetails(result.data);
+      } catch (e) {
+        const error = e as AxiosError;
+        setError(error.message);
+      }
+      setLoading(false);
+    };
     fetchProductDetails();
-  }, []);
+  }, [id]);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(Math.max(Number(event.target.value), 1));
