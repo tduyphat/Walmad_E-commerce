@@ -12,7 +12,7 @@ This project was done as a final project of the front-end module at [Integrify](
 
 1. [Technologies](#technologies)
 2. [Project Structure](#project-structure)
-3. [Global State & Reducers](#global-state-&-reducers)
+3. [Global State and Reducers](#global-state-and-reducers)
 4. [User Interface](#user-interface)
 5. [Getting Started](#getting-started)
 
@@ -121,7 +121,7 @@ src/
 ┣ setupTests.ts
 ┗ ThemeProvider.tsx
 ````
-## Global State & Reducers
+## Global State and Reducers
 
 Thanks to Redux Toolkit, the data is stored in a global store and can be accessed across all the components. There are four reducers in the store of this application: `productsReducer`, `userReducer`, `categoriesReducer`, `cartReducer`. The diagram belows demonstrates all the actions of each reducer and their required privilege. All the actions have been tested properly with Jest.
 
