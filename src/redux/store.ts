@@ -4,6 +4,7 @@ import productsReducer from "./reducers/productsReducers";
 import cartReducer from "./reducers/cartReducer";
 import categoriesReducer from "./reducers/categoriesReducer";
 import usersReducer from "./reducers/usersReducer";
+import ordersReducer from "./reducers/ordersReducer";
 import CartItem from "../interfaces/CartItem";
 
 const preCartReducer: CartItem[] = JSON.parse(
@@ -17,6 +18,7 @@ export const createStore = () => {
       cartReducer,
       categoriesReducer,
       usersReducer,
+      ordersReducer
     },
     preloadedState: {
       cartReducer: preCartReducer

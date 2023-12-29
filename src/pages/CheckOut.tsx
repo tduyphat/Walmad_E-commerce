@@ -8,14 +8,25 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { useState } from "react";
+import useAppDispatch from "../hooks/useAppDispatch";
+
 import AddressForm from "../components/AddressForm";
 import PaymentForm from "../components/PaymentForm";
-import Review from "../components/Review";
+import ReviewOrder from "../components/ReviewOrder";
 import AddressFormInput from "../interfaces/AddressFormInput";
-import { useState } from "react";
 import PaymentFormInput from "../interfaces/PaymentFormInput";
+import CartItem from "../interfaces/CartItem";
+import OrderInput from "../interfaces/OrderInput";
+import OrderProductInput from "../interfaces/OrderProductInput";
+import useAppSelector from "../hooks/useAppSelector";
+import { createOrderAsync } from "../redux/reducers/ordersReducer";
+import { toast } from "react-toastify";
+import { emptyCart } from "../redux/reducers/cartReducer";
 
 const Checkout = () => {
+  const cart = useAppSelector((state) => state.cartReducer);
+  const dispatch = useAppDispatch();
   const steps = ["Shipping address", "Payment details", "Review your order"];
 
   const getStepContent = (step: number) => {
@@ -35,7 +46,9 @@ const Checkout = () => {
           />
         );
       case 2:
-        return <Review addressForm={addressForm} paymentForm={paymentForm} />;
+        return (
+          <ReviewOrder addressForm={addressForm} paymentForm={paymentForm} />
+        );
       default:
         throw new Error("Unknown step");
     }
@@ -63,6 +76,9 @@ const Checkout = () => {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
+    if (activeStep === steps.length - 1) {
+      createOrder();
+    }
     setActiveStep(activeStep + 1);
   };
 
@@ -80,6 +96,31 @@ const Checkout = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setPaymentForm({ ...paymentForm, [event.target.id]: event.target.value });
+  };
+
+  const createOrderInput = (cartItems: CartItem[]): OrderInput => {
+    const orderProductsFromCartItems: OrderProductInput[] = cartItems.map(
+      (cartItem) => ({
+        productId: cartItem.id,
+        quantity: cartItem.quantity,
+      })
+    );
+
+    return {
+      orderProducts: orderProductsFromCartItems,
+      orderStatus: "Pending",
+    };
+  };
+
+  const createOrder = async () => {
+    const result = await dispatch(createOrderAsync(createOrderInput(cart)));
+    if (result.payload?.hasOwnProperty("id")) {
+      toast.success("Order placed successfully!");
+      dispatch(emptyCart());
+      localStorage.removeItem("cart");
+    } else {
+      toast.error("Cannot place order!");
+    }
   };
 
   return (
@@ -106,9 +147,8 @@ const Checkout = () => {
                 Thank you for your order.
               </Typography>
               <Typography variant="subtitle1">
-                Your order number is #2001539. We have emailed your order
-                confirmation, and will send you an update when your order has
-                shipped.
+                We have emailed your order confirmation, and will send you an
+                update when your order has shipped.
               </Typography>
             </React.Fragment>
           ) : (

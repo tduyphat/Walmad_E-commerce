@@ -9,12 +9,12 @@ import useAppSelector from "../hooks/useAppSelector";
 import AddressFormInput from "../interfaces/AddressFormInput";
 import PaymentFormInput from "../interfaces/PaymentFormInput";
 
-interface ReviewProps {
+interface ReviewOrderProps {
   addressForm: AddressFormInput;
   paymentForm: PaymentFormInput;
 }
 
-const Review: React.FC<ReviewProps> = ({ addressForm, paymentForm }) => {
+const ReviewOrder: React.FC<ReviewOrderProps> = ({ addressForm, paymentForm }) => {
   const { name, address1, address2, state, country } = addressForm;
   const { cardName, cardNumber, expDate } = paymentForm;
   const cart = useAppSelector((state) => state.cartReducer);
@@ -102,4 +102,4 @@ const Review: React.FC<ReviewProps> = ({ addressForm, paymentForm }) => {
   );
 };
 
-export default Review;
+export default ReviewOrder;

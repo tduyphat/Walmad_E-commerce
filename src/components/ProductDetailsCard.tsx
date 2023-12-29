@@ -63,7 +63,9 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   const dispatch = useAppDispatch();
   const onAddToCart = (payload: Product) => {
     dispatch(addToCart({ product: payload, quantity: amount }));
-    amount > 1 ? toast.info(`Added ${amount} items to cart`) : toast.info("Added 1 item to cart");
+    amount > 1
+      ? toast.info(`Added ${amount} items to cart`)
+      : toast.info("Added 1 item to cart");
   };
 
   return (
@@ -109,7 +111,9 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
             € {price}
           </Typography>
           <Typography variant="body1" color="textSecondary">
-            Only {inventory} left in store!
+            {inventory > 0
+              ? `Hurry up! Only ${inventory} left in store!`
+              : "Out of stock!"}
           </Typography>
           <ButtonGroup>
             <StyledButton
@@ -123,7 +127,10 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
               onChange={handleAmountChange}
               value={amount}
             />
-            <StyledButton onClick={() => setAmount(amount + 1)}>
+            <StyledButton
+              onClick={() => setAmount(amount + 1)}
+              disabled={inventory <= 0 ? true : false}
+            >
               <AddIcon fontSize="small" />
             </StyledButton>
           </ButtonGroup>
@@ -131,6 +138,7 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
             variant="contained"
             color="primary"
             size="large"
+            disabled={inventory <= 0 ? true : false}
             onClick={() => onAddToCart(productDetails)}
           >
             Add to Cart
