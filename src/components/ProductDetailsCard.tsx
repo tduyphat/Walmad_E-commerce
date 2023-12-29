@@ -12,7 +12,6 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Carousel from "react-material-ui-carousel";
 
-import ProductDetailsCardProps from "../interfaces/ProductDetailsCardProps";
 import useAppDispatch from "../hooks/useAppDispatch";
 import Product from "../interfaces/Product";
 import { addToCart } from "../redux/reducers/cartReducer";
@@ -46,6 +45,13 @@ const StyledInput = styled(TextField)({
     },
   },
 });
+
+interface ProductDetailsCardProps {
+  productDetails: Product;
+  amount: number;
+  setAmount: (amount: number) => void;
+  handleAmountChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
 const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   productDetails,

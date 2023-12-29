@@ -102,9 +102,9 @@ const Register = () => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box sx={{ mt: 3 }}>
+          <Box sx={{ mt: 3, width: 600 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
                   id="name"
@@ -115,7 +115,7 @@ const Register = () => {
                   onChange={handleFormChange}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
                   id="email"
@@ -126,7 +126,7 @@ const Register = () => {
                   onChange={handleFormChange}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
                   name="password"
@@ -149,7 +149,7 @@ const Register = () => {
                   onChange={handleFormChange}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
                   id="addressLine1"
@@ -160,7 +160,7 @@ const Register = () => {
                   onChange={handleFormChange}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
                   id="addressLine2"
@@ -171,7 +171,7 @@ const Register = () => {
                   onChange={handleFormChange}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
                   id="postCode"
@@ -182,7 +182,7 @@ const Register = () => {
                   onChange={handleFormChange}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
                   id="city"
@@ -193,7 +193,7 @@ const Register = () => {
                   onChange={handleFormChange}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
                   id="country"

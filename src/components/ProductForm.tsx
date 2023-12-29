@@ -8,10 +8,23 @@ import {
   MenuItem,
   Container,
   Button,
+  SelectChangeEvent,
 } from "@mui/material";
 import React from "react";
+
 import ImageLinkGenerator from "./ImageLinkGenerator";
-import ProductFormProps from "../interfaces/ProductFormProps";
+import Category from "../interfaces/Category";
+import ProductInputForm from "../interfaces/ProductInputForm";
+
+interface ProductFormProps {
+  form: ProductInputForm;
+  categories: Category[];
+  editMode: boolean;
+  handleFormChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleCategoryChange: (event: SelectChangeEvent<string>) => void;
+  handleSubmit: () => void;
+  handleCancelEdit: () => void;
+}
 
 const ProductForm: React.FC<ProductFormProps> = ({
   form,

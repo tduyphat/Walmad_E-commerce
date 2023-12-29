@@ -4,8 +4,15 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
+
 import useAppSelector from "../hooks/useAppSelector";
-import ReviewProps from "../interfaces/ReviewProps";
+import AddressFormInput from "../interfaces/AddressFormInput";
+import PaymentFormInput from "../interfaces/PaymentFormInput";
+
+interface ReviewProps {
+  addressForm: AddressFormInput;
+  paymentForm: PaymentFormInput;
+}
 
 const Review: React.FC<ReviewProps> = ({ addressForm, paymentForm }) => {
   const { name, address1, address2, state, country } = addressForm;

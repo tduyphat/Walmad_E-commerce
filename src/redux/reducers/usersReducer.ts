@@ -4,6 +4,7 @@ import axios from "axios";
 import User from "../../interfaces/User";
 import UserCredentials from "../../interfaces/UserCredentials";
 import UsersReducerState from "../../interfaces/UsersReducerState";
+import UpdateUserInput from "../../interfaces/UpdateUserInput";
 
 const initialState: UsersReducerState = {};
 
@@ -57,6 +58,28 @@ export const authenticateUserAsync = createAsyncThunk<
   }
 });
 
+export const updateUserAsync = createAsyncThunk(
+  "updateUserAsync",
+  async ({ id, update }: UpdateUserInput, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const result = await axios.patch<User>(
+        `${process.env.REACT_APP_API_URL}api/v1/users/${id}`,
+        update,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return result.data;
+    } catch (e) {
+      const error = e as Error;
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "userSlice",
   initialState,
@@ -80,6 +103,13 @@ const userSlice = createSlice({
     });
     builder.addCase(authenticateUserAsync.rejected, (state, action) => {
       state.error = action.payload;
+    });
+    //update user
+    builder.addCase(updateUserAsync.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+    });
+    builder.addCase(updateUserAsync.rejected, (state, action) => {
+      state.error = action.payload as string;
     });
   },
 });

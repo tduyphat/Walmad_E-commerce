@@ -12,7 +12,16 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import ProductsTableProps from "../interfaces/ProductsTableProps";
+import Product from "../interfaces/Product";
+
+interface ProductsTableProps {
+  filteredProducts: Product[];
+  currentPage: number;
+  limit: number;
+  editMode: boolean;
+  switchToEditMode: (product: Product) => void;
+  handleDelete: (productId: string) => void;
+}
 
 const ProductsTable: React.FC<ProductsTableProps> = ({
   filteredProducts,

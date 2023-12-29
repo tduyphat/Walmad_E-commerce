@@ -2,7 +2,11 @@ import React from "react";
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 
-import AppPaginationProps from "../interfaces/AppPaginationProps";
+interface AppPaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
 
 const AppPagination: React.FC<AppPaginationProps> = ({
   currentPage,

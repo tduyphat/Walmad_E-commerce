@@ -2,7 +2,12 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import AddressFormProps from "../interfaces/AddressFormProps";
+import AddressFormInput from "../interfaces/AddressFormInput";
+
+interface AddressFormProps {
+  addressForm: AddressFormInput;
+  handleAddressFormChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
 const AddressForm: React.FC<AddressFormProps> = ({
   addressForm,

@@ -66,7 +66,7 @@ const ImageLinkGenerator: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h6">Image URL Generator</Typography>
+      <Typography variant="h6" color="primary">Image URL Generator</Typography>
       {!file ? (
         <>
           <label>
