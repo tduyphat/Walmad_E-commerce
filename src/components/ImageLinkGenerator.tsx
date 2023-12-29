@@ -31,7 +31,7 @@ const ImageLinkGenerator: React.FC = () => {
 
       try {
         const result = await axios.post(
-          "https://api.escuelajs.co/api/v1/files/upload",
+          `https://api.escuelajs.co/api/v1/files/upload`,
           formData,
           {
             headers: {

@@ -26,22 +26,22 @@ describe("Test cartReducer normal action", () => {
   });
 
   test("Should increase product quantity", () => {
-    const cart = cartReducer(cartData, increaseQuantity(1));
+    const cart = cartReducer(cartData, increaseQuantity("00321573-0c56-47f2-8d65-1ffc51297e66"));
     expect(cart[0].quantity).toBe(2);
   });
 
   test("Should decrease product quantity", () => {
-    const cart = cartReducer(cartData, decreaseQuantity(2));
+    const cart = cartReducer(cartData, decreaseQuantity("bd711c33-280f-4079-ad39-eec98ee2f19a"));
     expect(cart[1].quantity).toBe(1);
   });
 
   test("Should remove when quantity is 0", () => {
-    const cart = cartReducer(cartData, decreaseQuantity(1));
+    const cart = cartReducer(cartData, decreaseQuantity("00321573-0c56-47f2-8d65-1ffc51297e66"));
     expect(cart.length).toBe(1);
   });
   
   test("Should remove product from cart", () => {
-    const cart = cartReducer(cartData, removeFromCart(2));
+    const cart = cartReducer(cartData, removeFromCart("bd711c33-280f-4079-ad39-eec98ee2f19a"));
     expect(cart.length).toBe(1);
     expect(cart[0].id).toBe(1);
   });

@@ -14,10 +14,10 @@ export const loginUserAsync = createAsyncThunk<
 >("loginUserAsync", async (cred, { rejectWithValue, dispatch }) => {
   try {
     const result = await axios.post(
-      "https://api.escuelajs.co/api/v1/auth/login",
+      `${process.env.REACT_APP_API_URL}api/v1/auth/login`,
       cred
     );
-    const { access_token } = result.data;
+    const access_token = result.data;
     localStorage.setItem("access_token", access_token);
     const authenticatedResult = await dispatch(
       authenticateUserAsync(access_token)
@@ -40,13 +40,13 @@ export const authenticateUserAsync = createAsyncThunk<
   User,
   string,
   { rejectValue: string }
->("authenticateUserAsync", async (access_token, { rejectWithValue }) => {
+>("authenticateUserAsync", async (token, { rejectWithValue }) => {
   try {
     const getprofile = await axios.get(
-      "https://api.escuelajs.co/api/v1/auth/profile",
+      `${process.env.REACT_APP_API_URL}api/v1/auth/profile`,
       {
         headers: {
-          Authorization: `Bearer ${access_token}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

@@ -33,6 +33,12 @@ const Register = () => {
     email: "",
     password: "",
     avatar: "",
+    role: "",
+    addressLine1: "",
+    addressLine2:"",
+    postCode: 0,
+    city: "",
+    country: ""
   };
   const [form, setForm] = useState(intialForm);
   const [showPassword, setShowPassword] = useState(false);
@@ -65,7 +71,7 @@ const Register = () => {
   const handleSubmit = async () => {
     try {
       const result = await axios.post(
-        "https://api.escuelajs.co/api/v1/users",
+        `${process.env.REACT_APP_API_URL}api/v1/users`,
         form
       );
       if (result.status === 201) {
@@ -140,6 +146,61 @@ const Register = () => {
                       </InputAdornment>
                     ),
                   }}
+                  onChange={handleFormChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="addressLine1"
+                  label="Address Line 1"
+                  name="addressLine1"
+                  value={form.addressLine1}
+                  autoFocus
+                  onChange={handleFormChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="addressLine2"
+                  label="Address Line 2"
+                  name="addressLine2"
+                  value={form.addressLine2}
+                  autoFocus
+                  onChange={handleFormChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="postCode"
+                  label="Post Code"
+                  name="postCode"
+                  value={form.postCode}
+                  autoFocus
+                  onChange={handleFormChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="city"
+                  label="City"
+                  name="city"
+                  value={form.city}
+                  autoFocus
+                  onChange={handleFormChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="country"
+                  label="Country"
+                  name="country"
+                  value={form.country}
+                  autoFocus
                   onChange={handleFormChange}
                 />
               </Grid>

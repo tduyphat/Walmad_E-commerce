@@ -16,7 +16,7 @@ export const fetchAllCategoriesAsync = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const result = await axios.get(
-        `https://api.escuelajs.co/api/v1/categories/`
+        `${process.env.REACT_APP_API_URL}api/v1/categorys/`
       );
       const data: Category[] = result.data;
       return data;

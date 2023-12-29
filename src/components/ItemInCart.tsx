@@ -59,7 +59,7 @@ const ItemInCart = (item: CartItem) => {
         </Grid>
         <Grid item xs={12} md={6}>
           <img
-            src={item.images[0]}
+            src={item.images[0].url}
             alt={item.title}
             style={{ maxWidth: 180, objectFit: "cover", marginLeft: 40 }}
           />

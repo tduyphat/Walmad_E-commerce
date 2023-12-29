@@ -17,10 +17,13 @@ export const initialState: {
 
 export const fetchAllProductsAsync = createAsyncThunk(
   "fetchAllProductsAsync",
-  async ({ limit, offset }: PaginationQuery, { rejectWithValue }) => {
+  async (
+    { limit, offset, sortType, sortOrder }: PaginationQuery,
+    { rejectWithValue }
+  ) => {
     try {
       const result = await axios.get(
-        `https://api.escuelajs.co/api/v1/products?offset=${offset}&limit=${limit}`
+        `${process.env.REACT_APP_API_URL}api/v1/products?offset=${offset}&limit=${limit}&sortType=${sortType}&sortOrder=${sortOrder}`
       );
       const data: Product[] = result.data;
       return data;
@@ -35,9 +38,15 @@ export const createProductAsync = createAsyncThunk(
   "createProductAsync",
   async (newProduct: CreateProductInput, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("access_token");
       const result = await axios.post<Product>(
-        "https://api.escuelajs.co/api/v1/products/",
-        newProduct
+        `${process.env.REACT_APP_API_URL}api/v1/products/`,
+        newProduct,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       return result.data;
     } catch (e) {
@@ -49,11 +58,17 @@ export const createProductAsync = createAsyncThunk(
 
 export const updateProductAsync = createAsyncThunk(
   "updateProductAsync",
-  async ({id, update}: UpdateProductInput, { rejectWithValue }) => {
+  async ({ id, update }: UpdateProductInput, { rejectWithValue }) => {
     try {
-      const result = await axios.put<Product>(
-        `https://api.escuelajs.co/api/v1/products/${id}`,
-        update
+      const token = localStorage.getItem("access_token");
+      const result = await axios.patch<Product>(
+        `${process.env.REACT_APP_API_URL}api/v1/products/${id}`,
+        update,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       return result.data;
     } catch (e) {
@@ -65,10 +80,16 @@ export const updateProductAsync = createAsyncThunk(
 
 export const deleteProductAsync = createAsyncThunk(
   "deleteProductAsync",
-  async (id: number, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("access_token");
       const result = await axios.delete<boolean>(
-        `https://api.escuelajs.co/api/v1/products/${id}`
+        `${process.env.REACT_APP_API_URL}api/v1/products/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (!result.data) {
         throw new Error("The product does not exist!");

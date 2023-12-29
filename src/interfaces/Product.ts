@@ -1,12 +1,16 @@
 import Category from "./Category";
+import ProductImage from "./ProductImage";
 
 interface Product {
-  id: number;
+  inventory: number;
   title: string;
   price: number;
   description: string;
   category: Category;
-  images: string[];
+  images: ProductImage[];
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export default Product;

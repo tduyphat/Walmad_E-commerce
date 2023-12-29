@@ -3,7 +3,7 @@ import { setupServer } from "msw/node";
 import { categoriesData } from "../data/categoriesData";
 
 export const handlers = [
-  rest.get("https://api.escuelajs.co/api/v1/categories", (req, res, ctx) => {
+  rest.get("${process.env.REACT_APP_API_URL}api/v1/categories", (req, res, ctx) => {
     return res(ctx.json(categoriesData));
   }),
 ];

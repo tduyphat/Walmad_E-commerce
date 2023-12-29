@@ -40,7 +40,7 @@ const ProductsByCategory = () => {
       setLoading(true);
       try {
         const result = await axios.get(
-          `https://api.escuelajs.co/api/v1/products/?categoryId=${id}`
+          `${process.env.REACT_APP_API_URL}api/v1/products/category/${id}`
         );
         const products = result.data;
         products.sort((a: Product, b: Product) =>
@@ -58,7 +58,7 @@ const ProductsByCategory = () => {
     const fetchCategoryName = async () => {
       try {
         const result = await axios.get(
-          `https://api.escuelajs.co/api/v1/categories/${id}`
+          `${process.env.REACT_APP_API_URL}api/v1/categorys/${id}`
         );
         setCatgoryName(result.data.name);
       } catch (e) {

@@ -22,13 +22,14 @@ import Product from "../interfaces/Product";
 import ProductInputForm from "../interfaces/ProductInputForm";
 import ProductForm from "../components/ProductForm";
 import ProductsTable from "../components/ProductsTable";
+import ProductImage from "../interfaces/ProductImage";
 
 const AdminDashboard = () => {
   const { products, loading } = useAppSelector(
     (state) => state.productsReducer
   );
   const { categories } = useAppSelector((state) => state.categoriesReducer);
-  const [productUpdateId, setProductUpdateId] = useState<number>(1);
+  const [productUpdateId, setProductUpdateId] = useState<string>("");
   const [editMode, setEditMode] = useState(false);
 
   const intialForm: ProductInputForm = {
@@ -37,6 +38,7 @@ const AdminDashboard = () => {
     description: "",
     categoryId: categories[0].id,
     images: "",
+    inventory: 1,
   };
 
   const [form, setForm] = useState(intialForm);
@@ -93,12 +95,21 @@ const AdminDashboard = () => {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
+  const handleCatgoryChange = (event: SelectChangeEvent<string>) => {
+    setForm({ ...form, [event.target.name]: event.target.value });
+  };
+  
+
   const convertImagesStringToArray = (imagesString: string) => {
-    return imagesString.split(", ").map((image) => image.trim());
+    const urlArray = imagesString.split(", ").map((image) => image.trim());
+    const imageArray = urlArray.map((url) => ({ url }));
+    return imageArray;
   };
 
-  const convertArrayImagesToString = (imagesArray: string[]) => {
-    return imagesArray.join(", ");
+  const convertArrayImagesToString = (imagesArray: ProductImage[]) => {
+    const urls = imagesArray.map((obj) => obj.url);
+    const resultString = urls.join(", ");
+    return resultString;
   };
 
   const resetForm = () => {
@@ -108,6 +119,7 @@ const AdminDashboard = () => {
   const createProduct = async () => {
     const result = await dispatch(
       createProductAsync({
+        inventory: form.inventory,
         title: form.title,
         price: form.price,
         description: form.description,
@@ -153,6 +165,7 @@ const AdminDashboard = () => {
     setEditMode(true);
     setProductUpdateId(product.id);
     setForm({
+      inventory: product.inventory,
       title: product.title,
       price: product.price,
       categoryId: product.category.id,
@@ -166,7 +179,7 @@ const AdminDashboard = () => {
     resetForm();
   };
 
-  const handleDelete = (productId: number) => {
+  const handleDelete = (productId: string) => {
     confirm({
       description: `${
         products.find((product) => product.id === productId)?.title
@@ -192,6 +205,7 @@ const AdminDashboard = () => {
         categories={categories}
         editMode={editMode}
         handleFormChange={handleFormChange}
+        handleCategoryChange={handleCatgoryChange}
         handleSubmit={handleSubmit}
         handleCancelEdit={handleCancelEdit}
       />

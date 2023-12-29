@@ -35,7 +35,7 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchAllProductsAsync({ offset: 0, limit: 0 }));
+    dispatch(fetchAllProductsAsync({ offset: 0, limit: 120, sortType: "byTitle", sortOrder: "asc" }));
   }, [dispatch]);
 
   const router = createBrowserRouter([

@@ -6,7 +6,7 @@ interface ProductsTableProps {
   limit: number;
   editMode: boolean;
   switchToEditMode: (product: Product) => void;
-  handleDelete: (productId: number) => void;
+  handleDelete: (productId: string) => void;
 }
 
 export default ProductsTableProps;

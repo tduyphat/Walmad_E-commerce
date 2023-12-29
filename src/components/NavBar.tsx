@@ -218,7 +218,7 @@ const NavBar = ({
                       Profile
                     </Typography>
                   </MenuItem>
-                  {currentUser?.role === "admin" && (
+                  {currentUser?.role === "Admin" && (
                     <MenuItem onClick={handleCloseUserMenu}>
                       <TocIcon sx={{ marginRight: 1, fontSize: "medium" }} />
                       <Typography

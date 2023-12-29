@@ -18,14 +18,15 @@ const ProductForm: React.FC<ProductFormProps> = ({
   categories,
   editMode,
   handleFormChange,
+  handleCategoryChange,
   handleSubmit,
   handleCancelEdit,
 }) => {
-  const { title, price, description, categoryId, images } = form;
+  const { inventory, title, price, description, categoryId, images } = form;
   return (
     <Box>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={3}>
           <TextField
             fullWidth
             id="title"
@@ -36,7 +37,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             onChange={handleFormChange}
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={3}>
           <TextField
             fullWidth
             name="price"
@@ -50,14 +51,29 @@ const ProductForm: React.FC<ProductFormProps> = ({
             }}
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            fullWidth
+            name="inventory"
+            label="Inventory"
+            type="number"
+            id="inventory"
+            value={inventory}
+            onChange={handleFormChange}
+            inputProps={{
+              min: 1,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
           <FormControl fullWidth>
             <InputLabel id="categoryId">Category</InputLabel>
             <Select
               id="categoryId"
-              value={categoryId.toString()}
+              name="categoryId"
+              value={categoryId}
               label="Category"
-              onChange={() => handleFormChange}
+              onChange={handleCategoryChange}
             >
               {categories.map((category) => (
                 <MenuItem key={category.id} value={category.id}>

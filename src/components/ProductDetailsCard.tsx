@@ -53,7 +53,7 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
   setAmount,
   handleAmountChange,
 }) => {
-  const { title, description, price, images } = productDetails;
+  const { inventory, title, description, price, images } = productDetails;
   const dispatch = useAppDispatch();
   const onAddToCart = (payload: Product) => {
     dispatch(addToCart({ product: payload, quantity: amount }));
@@ -67,11 +67,11 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
           <Carousel>
             {images.map((image) => (
               <CardMedia
-                key={image}
+                key={image.id}
                 component="img"
                 alt={title}
                 height="400"
-                image={image}
+                image={image.url}
               />
             ))}
           </Carousel>
@@ -80,7 +80,7 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
             component="img"
             alt={title}
             height="400"
-            image={images[0]}
+            image={images[0].url}
           />
         )}
       </Grid>
@@ -101,6 +101,9 @@ const ProductDetailsCard: React.FC<ProductDetailsCardProps> = ({
           </Typography>
           <Typography variant="h4" color="primary" gutterBottom>
             € {price}
+          </Typography>
+          <Typography variant="body1" color="textSecondary">
+            Only {inventory} left in store!
           </Typography>
           <ButtonGroup>
             <StyledButton

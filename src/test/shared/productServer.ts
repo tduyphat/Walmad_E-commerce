@@ -4,13 +4,27 @@ import { productsData } from "../data/productsData";
 import CreateProductInput from "../../interfaces/CreateProductInput";
 import Product from "../../interfaces/Product";
 import { categoriesData } from "../data/categoriesData";
+import ProductImageCreate from "../../interfaces/ProductImageCreate";
+
+const imageTransform = (imageArray: ProductImageCreate[]) => {
+  const result = [];
+  for (const item in imageArray) {
+    const imageObject = {
+      url : item,
+      id : crypto.randomUUID(),
+    }
+    result.push(imageObject);
+  }
+  return result;
+}
+
 
 export const handlers = [
   rest.delete(
-    "https://api.escuelajs.co/api/v1/products/:id",
+    `${process.env.REACT_APP_API_URL}api/v1/products/:id`,
     async (req, res, ctx) => {
       const { id } = req.params;
-      if (productsData.find((product) => product.id === Number(id))) {
+      if (productsData.find((product) => product.id === id)) {
         return res(ctx.json(true));
       } else {
         return res(ctx.json(false));
@@ -18,7 +32,7 @@ export const handlers = [
     }
   ),
   rest.post(
-    "https://api.escuelajs.co/api/v1/products",
+    `${process.env.REACT_APP_API_URL}api/v1/products`,
     async (req, res, ctx) => {
       const input: CreateProductInput = await req.json();
       const category = categoriesData.find(
@@ -26,12 +40,15 @@ export const handlers = [
       );
       if (category) {
         const newProduct: Product = {
-          id: productsData.length + 1,
-          images: input.images,
+          id: crypto.randomUUID(),
+          images: imageTransform(input.images),
           title: input.title,
           description: input.description,
           category,
           price: input.price,
+          inventory: 0,
+          createdAt: new Date(),
+          updatedAt: new Date()
         };
         productsData.push(newProduct);
         return res(ctx.json(newProduct));
@@ -51,12 +68,12 @@ export const handlers = [
     }
   ),
   rest.put(
-    "https://api.escuelajs.co/api/v1/products/:id",
+    `${process.env.REACT_APP_API_URL}api/v1/products/:id`,
     async (req, res, ctx) => {
       const update = await req.json();
       const { id } = req.params;
       const index = productsData.findIndex(
-        (product) => product.id === Number(id)
+        (product) => product.id === id
       );
       if (index > -1) {
         productsData[index] = {

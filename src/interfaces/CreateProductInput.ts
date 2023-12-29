@@ -1,9 +1,12 @@
+import ProductImageCreate from "./ProductImageCreate";
+
 interface CreateProductInput {
+  inventory: number;
   title: string;
-  categoryId: number;
   price: number;
   description: string;
-  images: string[];
+  categoryId: string; 
+  images: ProductImageCreate[];
 }
 
 export default CreateProductInput;

@@ -23,7 +23,12 @@ const ProductCard: React.FC<Product> = (product) => {
         }}
         onClick={() => navigate(`/products/${id}`)}
       >
-        <CardMedia component="img" alt={title} height="200" image={images[0]} />
+        <CardMedia
+          component="img"
+          alt={title}
+          height="200"
+          image={images[0].url}
+        />
         <CardContent>
           <Typography variant="body1" gutterBottom>
             {title}

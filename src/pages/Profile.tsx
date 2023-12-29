@@ -45,7 +45,7 @@ const Profile = () => {
         <Typography variant="body1" gutterBottom>
           Email: {currentUser?.email}
         </Typography>
-        <Typography variant="body1" gutterBottom>
+        {/* <Typography variant="body1" gutterBottom>
           Password:{" "}
           <TextField
             fullWidth
@@ -64,7 +64,7 @@ const Profile = () => {
               ),
             }}
           />
-        </Typography>
+        </Typography> */}
       </CardContent>
     </Card>
   );

@@ -22,7 +22,7 @@ const ProductDetails = () => {
       setLoading(true);
       try {
         const result = await axios.get(
-          `https://api.escuelajs.co/api/v1/products/${id}`
+          `${process.env.REACT_APP_API_URL}api/v1/products/${id}`
         );
         setProductDetails(result.data);
       } catch (e) {

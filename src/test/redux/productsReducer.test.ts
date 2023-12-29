@@ -88,27 +88,32 @@ describe("Test normal actions in productsReducer", () => {
 
 describe("Test async thunk actions in productsReducer", () => {
   test("Should fetch all products with pagination", async () => {
-    await store.dispatch(fetchAllProductsAsync({ limit: 3, offset: 0 }));
+    await store.dispatch(fetchAllProductsAsync({ limit: 3, offset: 0, sortType: "byTitle", sortOrder: "asc" }));
     expect(store.getState().productsReducer.products.length).toBe(3);
   });
 
   test("Should delete an existing product", async () => {
-    const resultAction = await store.dispatch(deleteProductAsync(1));
+    const resultAction = await store.dispatch(deleteProductAsync("00321573-0c56-47f2-8d65-1ffc51297e66"));
     expect(resultAction.payload).toBe(1);
   });
 
   test("Should delete a non-existing product", async () => {
-    const resultAction = await store.dispatch(deleteProductAsync(4));
+    const resultAction = await store.dispatch(deleteProductAsync("2f382278-9892-4102-9cc9-0815752c84e5"));
     expect(typeof resultAction.payload).toBe("string");
   });
 
   test("Should create a product", async () => {
     const input: CreateProductInput = {
+      inventory: 100,
       title: "test product",
       description: "test product",
       price: 100,
-      categoryId: 2,
-      images: ["test product"],
+      categoryId: "090c67d4-c9ea-48e9-9a90-51ce873da540",
+      images: [
+        {
+          url: "https://picsum.photos/200", 
+        }
+      ]
     };
     await store.dispatch(createProductAsync(input));
     expect(store.getState().productsReducer.products.length).toBe(1);
@@ -116,11 +121,16 @@ describe("Test async thunk actions in productsReducer", () => {
 
   test("Should not create a product with incorrect input", async () => {
     const input: CreateProductInput = {
+      inventory: -1,
       title: "test product",
       description: "test product",
       price: 100,
-      categoryId: 10,
-      images: ["test product"],
+      categoryId: "2f382278-9892-4102-9cc9-0815752c84e5",
+      images: [
+        {
+          url: "https://picsum.photos/200", 
+        }
+      ],
     };
     await store.dispatch(createProductAsync(input));
     expect(store.getState().productsReducer.products.length).toBe(0);
@@ -128,7 +138,7 @@ describe("Test async thunk actions in productsReducer", () => {
 
   test("Should update product", async () => {
     const input: UpdateProductInput = {
-      id: 1,
+      id: "00321573-0c56-47f2-8d65-1ffc51297e66",
       update: {
         price: 200,
         title: "updated title",
