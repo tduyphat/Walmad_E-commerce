@@ -19,9 +19,18 @@ import { fetchAllProductsAsync } from "./redux/reducers/productsReducers";
 import { authenticateUserAsync } from "./redux/reducers/usersReducer";
 import { ThemeProvider } from "./ThemeProvider";
 import CheckOut from "./pages/CheckOut";
+import useAppSelector from "./hooks/useAppSelector";
+import { fetchAllOrdersAsync } from "./redux/reducers/ordersReducer";
 
 const App = () => {
   const dispatch = useAppDispatch();
+  // const { currentUser } = useAppSelector((state) => state.usersReducer);
+
+  // useEffect(() => {
+  //   if (currentUser?.role === "Admin") {
+  //     dispatch(fetchAllOrdersAsync());
+  //   }
+  // }, []);
 
   useEffect(() => {
     const access_token = localStorage.getItem("access_token");
@@ -35,7 +44,14 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchAllProductsAsync({ offset: 0, limit: 120, sortType: "byTitle", sortOrder: "asc" }));
+    dispatch(
+      fetchAllProductsAsync({
+        offset: 0,
+        limit: 500,
+        sortType: "byTitle",
+        sortOrder: "asc",
+      })
+    );
   }, [dispatch]);
 
   const router = createBrowserRouter([
@@ -93,7 +109,7 @@ const App = () => {
   ]);
   return (
     <ThemeProvider>
-        <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 };

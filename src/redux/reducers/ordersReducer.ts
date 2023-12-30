@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import Order from "../../interfaces/Order";
-import PaginationQuery from "../../interfaces/PaginationQuery";
 import OrderInput from "../../interfaces/OrderInput";
 import UpdateOrderInput from "../../interfaces/UpdateOrderInput";
 
@@ -17,11 +16,11 @@ export const initialState: {
 
 export const fetchAllOrdersAsync = createAsyncThunk(
   "fetchAllOrdersAsync",
-  async ({ limit, offset }: PaginationQuery, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("access_token");
       const result = await axios.get(
-        `${process.env.REACT_APP_API_URL}api/v1/orders?offset=${offset}&limit=${limit}`,
+        `${process.env.REACT_APP_API_URL}api/v1/orders`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
