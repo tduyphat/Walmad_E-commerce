@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Avatar,
   Box,
   Button,
@@ -10,24 +7,21 @@ import {
   CardContent,
   CardHeader,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
   Modal,
   Typography,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useConfirm } from "material-ui-confirm";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import useAppSelector from "../hooks/useAppSelector";
 import UpdateUserInput from "../interfaces/UpdateUserInput";
-import { logOut, updateUserAsync } from "../redux/reducers/usersReducer";
+import { logOut, updateCurrentUserAsync } from "../redux/reducers/usersReducer";
 import useAppDispatch from "../hooks/useAppDispatch";
 import UpdateUserForm from "../components/UpdateUserForm";
 import PasswordChangeForm from "../components/PasswordChangeForm";
 import Order from "../interfaces/Order";
+import OrderHistoryUser from "../components/OrderHistoryUser";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -91,7 +85,7 @@ const Profile = () => {
 
   const handleUpdate = async () => {
     const result = await dispatch(
-      updateUserAsync({
+      updateCurrentUserAsync({
         id: currentUser!.id,
         update: updateForm.update,
       })
@@ -175,23 +169,7 @@ const Profile = () => {
     }
   };
 
-  const formatDateTime = (date: Date) => {
-    const day = date.getDate();
-    const month = date.getMonth() + 1; // Months are zero-based
-    const year = date.getFullYear();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    // Ensure leading zeros for single-digit days, months, hours, and minutes
-    const formattedDay = day < 10 ? `0${day}` : day;
-    const formattedMonth = month < 10 ? `0${month}` : month;
-    const formattedHours = hours < 10 ? `0${hours}` : hours;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-    return `${formattedDay}.${formattedMonth}.${year} ${formattedHours}:${formattedMinutes}`;
-  };
-
-  const cancelOrder = async (id: string) => {
+  const cancelOrder = (id: string) => {
     confirm({
       description: "Your order will be cancelled.",
     })
@@ -310,85 +288,7 @@ const Profile = () => {
           Order History
         </Typography>
         {orders.length > 0 ? (
-          orders.map((order) => {
-            const orderDate = new Date(order.createdAt.toString());
-            const currentTime = new Date();
-            const timeDifference =
-              (currentTime.valueOf() - orderDate.valueOf()) / (1000 * 60 * 60);
-            return (
-              <Accordion key={order.id}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography>
-                    Order Date:{" "}
-                    {formatDateTime(new Date(order.createdAt.toString()))}
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <List disablePadding>
-                    <ListItem sx={{ py: 1, px: 0 }}>
-                      <ListItemText primary="Order ID" />
-                      <Typography variant="subtitle1">{order.id}</Typography>
-                    </ListItem>
-                    {order.orderProducts.map((orderProduct) => (
-                      <ListItem
-                        key={orderProduct.product.id}
-                        sx={{ py: 1, px: 0 }}
-                      >
-                        <ListItemText
-                          primary={orderProduct.product.title}
-                          secondary={`Quantity: ${orderProduct.quantity}`}
-                        />
-                        <Typography variant="body2">
-                          €{orderProduct.product.price * orderProduct.quantity}
-                        </Typography>
-                      </ListItem>
-                    ))}
-                    <ListItem sx={{ py: 1, px: 0 }}>
-                      <ListItemText primary="Total" />
-                      <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                        €
-                        {order.orderProducts.reduce(
-                          (acc, curr) =>
-                            acc + curr.product.price * curr.quantity,
-                          0
-                        )}
-                      </Typography>
-                    </ListItem>
-                    <ListItem sx={{ py: 1, px: 0 }}>
-                      <ListItemText primary="Order Status" />
-                      <Typography
-                        variant="subtitle1"
-                        sx={{ fontWeight: 700 }}
-                        color={
-                          order.orderStatus === "Cancelled"
-                            ? "error"
-                            : "primary"
-                        }
-                      >
-                        {order.orderStatus}
-                      </Typography>
-                    </ListItem>
-                    {timeDifference < 2 && order.orderStatus !== "Cancelled" && (
-                      <ListItem sx={{ py: 1, px: 0 }}>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          size="small"
-                          onClick={() => cancelOrder(order.id)}
-                        >
-                          Cancel Order
-                        </Button>
-                      </ListItem>
-                    )}
-                  </List>
-                </AccordionDetails>
-              </Accordion>
-            );
-          })
+          <OrderHistoryUser orders={orders} cancelOrder={cancelOrder} />
         ) : (
           <Box
             sx={{

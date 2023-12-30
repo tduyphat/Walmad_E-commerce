@@ -4,6 +4,7 @@ interface UsersReducerState {
   users?: User[];
   currentUser?: User;
   error?: string;
+  loading: boolean;
 }
 
 export default UsersReducerState;

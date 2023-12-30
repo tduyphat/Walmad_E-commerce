@@ -6,7 +6,7 @@ import UserCredentials from "../../interfaces/UserCredentials";
 import UsersReducerState from "../../interfaces/UsersReducerState";
 import UpdateUserInput from "../../interfaces/UpdateUserInput";
 
-const initialState: UsersReducerState = {};
+const initialState: UsersReducerState = { loading: false };
 
 export const loginUserAsync = createAsyncThunk<
   User,
@@ -58,7 +58,7 @@ export const authenticateUserAsync = createAsyncThunk<
   }
 });
 
-export const updateUserAsync = createAsyncThunk(
+export const updateCurrentUserAsync = createAsyncThunk(
   "updateUserAsync",
   async ({ id, update }: UpdateUserInput, { rejectWithValue }) => {
     try {
@@ -73,6 +73,28 @@ export const updateUserAsync = createAsyncThunk(
         }
       );
       return result.data;
+    } catch (e) {
+      const error = e as Error;
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchAllUsersAsync = createAsyncThunk(
+  "fetchAllUsersAsync",
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const result = await axios.get(
+        `${process.env.REACT_APP_API_URL}api/v1/users`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data: User[] = result.data;
+      return data;
     } catch (e) {
       const error = e as Error;
       return rejectWithValue(error.message);
@@ -105,10 +127,22 @@ const userSlice = createSlice({
       state.error = action.payload;
     });
     //update user
-    builder.addCase(updateUserAsync.fulfilled, (state, action) => {
+    builder.addCase(updateCurrentUserAsync.fulfilled, (state, action) => {
       state.currentUser = action.payload;
     });
-    builder.addCase(updateUserAsync.rejected, (state, action) => {
+    builder.addCase(updateCurrentUserAsync.rejected, (state, action) => {
+      state.error = action.payload as string;
+    });
+    //fetch all orders
+    builder.addCase(fetchAllUsersAsync.fulfilled, (state, action) => {
+      state.users = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(fetchAllUsersAsync.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchAllUsersAsync.rejected, (state, action) => {
+      state.loading = false;
       state.error = action.payload as string;
     });
   },

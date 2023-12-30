@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import AdminDashboard from "./pages/AdminDashboard";
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -19,18 +18,12 @@ import { fetchAllProductsAsync } from "./redux/reducers/productsReducers";
 import { authenticateUserAsync } from "./redux/reducers/usersReducer";
 import { ThemeProvider } from "./ThemeProvider";
 import CheckOut from "./pages/CheckOut";
-import useAppSelector from "./hooks/useAppSelector";
-import { fetchAllOrdersAsync } from "./redux/reducers/ordersReducer";
+import ProductDashboard from "./pages/ProductDashboard";
+import UserDashboard from "./pages/UserDashboard";
+import OrderDashboard from "./pages/OrderDashboard";
 
 const App = () => {
   const dispatch = useAppDispatch();
-  // const { currentUser } = useAppSelector((state) => state.usersReducer);
-
-  // useEffect(() => {
-  //   if (currentUser?.role === "Admin") {
-  //     dispatch(fetchAllOrdersAsync());
-  //   }
-  // }, []);
 
   useEffect(() => {
     const access_token = localStorage.getItem("access_token");
@@ -77,10 +70,26 @@ const App = () => {
           element: <ProductDetails />,
         },
         {
-          path: "/admin",
+          path: "/product-dashboard",
           element: (
             <CheckAdmin>
-              <AdminDashboard />
+              <ProductDashboard />
+            </CheckAdmin>
+          ),
+        },
+        {
+          path: "/user-dashboard",
+          element: (
+            <CheckAdmin>
+              <UserDashboard />
+            </CheckAdmin>
+          ),
+        },
+        {
+          path: "/order-dashboard",
+          element: (
+            <CheckAdmin>
+              <OrderDashboard />
             </CheckAdmin>
           ),
         },

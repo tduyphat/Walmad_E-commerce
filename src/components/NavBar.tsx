@@ -219,15 +219,35 @@ const NavBar = ({
                     </Typography>
                   </MenuItem>
                   {currentUser?.role === "Admin" && (
-                    <MenuItem onClick={handleCloseUserMenu}>
-                      <TocIcon sx={{ marginRight: 1, fontSize: "medium" }} />
-                      <Typography
-                        onClick={() => navigate("/admin")}
-                        textAlign="center"
-                      >
-                        Dashboard
-                      </Typography>
-                    </MenuItem>
+                    <Box>
+                      <MenuItem onClick={handleCloseUserMenu}>
+                        <TocIcon sx={{ marginRight: 1, fontSize: "medium" }} />
+                        <Typography
+                          onClick={() => navigate("/product-dashboard")}
+                          textAlign="center"
+                        >
+                          Products
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem onClick={handleCloseUserMenu}>
+                        <TocIcon sx={{ marginRight: 1, fontSize: "medium" }} />
+                        <Typography
+                          onClick={() => navigate("/user-dashboard")}
+                          textAlign="center"
+                        >
+                          Users
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem onClick={handleCloseUserMenu}>
+                        <TocIcon sx={{ marginRight: 1, fontSize: "medium" }} />
+                        <Typography
+                          onClick={() => navigate("/order-dashboard")}
+                          textAlign="center"
+                        >
+                          Orders
+                        </Typography>
+                      </MenuItem>
+                    </Box>
                   )}
                   <MenuItem onClick={handleCloseUserMenu}>
                     <LogoutIcon sx={{ marginRight: 1, fontSize: "medium" }} />

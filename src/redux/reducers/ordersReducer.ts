@@ -27,6 +27,7 @@ export const fetchAllOrdersAsync = createAsyncThunk(
           },
         }
       );
+      console.log(result.data);
       const data: Order[] = result.data;
       return data;
     } catch (e) {

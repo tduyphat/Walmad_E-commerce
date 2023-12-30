@@ -115,9 +115,9 @@ const Checkout = () => {
   const createOrder = async () => {
     const result = await dispatch(createOrderAsync(createOrderInput(cart)));
     if (result.payload?.hasOwnProperty("id")) {
-      toast.success("Order placed successfully!");
       dispatch(emptyCart());
       localStorage.removeItem("cart");
+      toast.success("Order placed successfully!");
     } else {
       toast.error("Cannot place order!");
     }

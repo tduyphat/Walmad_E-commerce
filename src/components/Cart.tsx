@@ -10,6 +10,7 @@ const Cart = ({
 }: {
   setCartOpen: (cartOpen: boolean) => void;
 }) => {
+  const currentUser = useAppSelector((state) => state.usersReducer.currentUser);
   const cart = useAppSelector((state) => state.cartReducer);
   const navigate = useNavigate();
 
@@ -35,7 +36,7 @@ const Cart = ({
           fullWidth
           variant="contained"
           onClick={() => {
-            navigate("/checkout");
+            navigate(currentUser ? "/checkout" : "/login");
             setCartOpen(false);
           }}
         >

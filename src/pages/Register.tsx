@@ -33,12 +33,12 @@ const Register = () => {
     email: "",
     password: "",
     avatar: "",
-    role: "",
+    role: "Customer",
     addressLine1: "",
-    addressLine2:"",
+    addressLine2: "",
     postCode: 0,
     city: "",
-    country: ""
+    country: "",
   };
   const [form, setForm] = useState(intialForm);
   const [showPassword, setShowPassword] = useState(false);
@@ -80,7 +80,7 @@ const Register = () => {
       }
     } catch (e: any) {
       const errorResponse = e.response?.data as ErrorResponse;
-      errorResponse.message.map((message: string) => toast.error(message));
+      toast.error(errorResponse.message);
     }
   };
 

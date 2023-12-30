@@ -24,7 +24,7 @@ import ProductForm from "../components/ProductForm";
 import ProductsTable from "../components/ProductsTable";
 import ProductImage from "../interfaces/ProductImage";
 
-const AdminDashboard = () => {
+const ProductDashboard = () => {
   const { products, loading } = useAppSelector(
     (state) => state.productsReducer
   );
@@ -242,4 +242,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default ProductDashboard;
