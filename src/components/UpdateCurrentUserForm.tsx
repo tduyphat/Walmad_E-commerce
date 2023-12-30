@@ -1,8 +1,7 @@
 import { Box, Grid, TextField, Button } from "@mui/material";
 import React from "react";
-
 import ImageLinkGenerator from "./ImageLinkGenerator";
-import UserRegisterInput from "../interfaces/UserRegisterInput";
+import UpdateUserInput from "../interfaces/UpdateUserInput";
 
 const style = {
   position: "absolute" as "absolute",
@@ -15,17 +14,17 @@ const style = {
   p: 4,
 };
 
-interface UpdateUserFormProps {
-  updateForm: Partial<UserRegisterInput>;
+interface UpdateCurrentUserFormProps {
+  updateForm: UpdateUserInput;
   handleUpdateFormChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  updateUser: () => () => void;
+  handleUpdate: () => void;
   handleUpdateFormClose: () => void;
 }
 
-const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
+const UpdateCurrentUserForm: React.FC<UpdateCurrentUserFormProps> = ({
   updateForm,
   handleUpdateFormChange,
-  updateUser,
+  handleUpdate,
   handleUpdateFormClose,
 }) => {
   return (
@@ -37,7 +36,7 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
             id="name"
             label="Full name"
             name="name"
-            value={updateForm.name}
+            value={updateForm.update.name}
             autoFocus
             onChange={handleUpdateFormChange}
           />
@@ -48,7 +47,7 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
             id="email"
             label="Email"
             name="email"
-            value={updateForm.email}
+            value={updateForm.update.email}
             autoFocus
             onChange={handleUpdateFormChange}
           />
@@ -59,7 +58,7 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
             id="addressLine1"
             label="Address Line 1"
             name="addressLine1"
-            value={updateForm.addressLine1}
+            value={updateForm.update.addressLine1}
             autoFocus
             onChange={handleUpdateFormChange}
           />
@@ -70,7 +69,7 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
             id="addressLine2"
             label="Address Line 2"
             name="addressLine2"
-            value={updateForm.addressLine2}
+            value={updateForm.update.addressLine2}
             autoFocus
             onChange={handleUpdateFormChange}
           />
@@ -81,7 +80,7 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
             id="postCode"
             label="Post Code"
             name="postCode"
-            value={updateForm.postCode}
+            value={updateForm.update.postCode}
             autoFocus
             onChange={handleUpdateFormChange}
           />
@@ -92,7 +91,7 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
             id="city"
             label="City"
             name="city"
-            value={updateForm.city}
+            value={updateForm.update.city}
             autoFocus
             onChange={handleUpdateFormChange}
           />
@@ -103,7 +102,7 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
             id="country"
             label="Country"
             name="country"
-            value={updateForm.country}
+            value={updateForm.update.country}
             autoFocus
             onChange={handleUpdateFormChange}
           />
@@ -114,7 +113,7 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
             id="avatar"
             label="Avatar URL"
             name="avatar"
-            value={updateForm.avatar}
+            value={updateForm.update.avatar}
             autoFocus
             onChange={handleUpdateFormChange}
           />
@@ -138,15 +137,15 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
           <Button
             size="large"
             fullWidth
-            onClick={updateUser()}
+            onClick={handleUpdate}
             variant="contained"
             disabled={
-              updateForm.name === "" ||
-              updateForm.email === "" ||
-              updateForm.avatar === "" ||
-              updateForm.addressLine1 === "" ||
-              updateForm.city === "" ||
-              updateForm.country === ""
+              updateForm.update.name === "" ||
+              updateForm.update.email === "" ||
+              updateForm.update.avatar === "" ||
+              updateForm.update.addressLine1 === "" ||
+              updateForm.update.city === "" ||
+              updateForm.update.country === ""
                 ? true
                 : false
             }
@@ -159,4 +158,4 @@ const UpdateUserForm: React.FC<UpdateUserFormProps> = ({
   );
 };
 
-export default UpdateUserForm;
+export default UpdateCurrentUserForm;

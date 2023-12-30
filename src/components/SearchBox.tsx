@@ -9,7 +9,7 @@ const SearchBox: React.FC<SearchBarProps> = ({ handleSearch }) => {
   return (
     <>
       <Input
-        placeholder="Search product"
+        placeholder="Search by name"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSearch(e)}
       />
     </>

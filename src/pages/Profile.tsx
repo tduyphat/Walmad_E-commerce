@@ -18,10 +18,10 @@ import useAppSelector from "../hooks/useAppSelector";
 import UpdateUserInput from "../interfaces/UpdateUserInput";
 import { logOut, updateCurrentUserAsync } from "../redux/reducers/usersReducer";
 import useAppDispatch from "../hooks/useAppDispatch";
-import UpdateUserForm from "../components/UpdateUserForm";
 import PasswordChangeForm from "../components/PasswordChangeForm";
 import Order from "../interfaces/Order";
 import OrderHistoryUser from "../components/OrderHistoryUser";
+import UpdateCurrentUserForm from "../components/UpdateCurrentUserForm";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -265,7 +265,7 @@ const Profile = () => {
           </CardContent>
         </Card>
         <Modal open={updateFormOpen} onClose={handleUpdateFormClose}>
-          <UpdateUserForm
+          <UpdateCurrentUserForm
             updateForm={updateForm}
             handleUpdateFormChange={handleUpdateFormChange}
             handleUpdate={handleUpdate}

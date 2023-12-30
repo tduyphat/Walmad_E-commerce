@@ -17,11 +17,11 @@ const ProductsLimiter: React.FC<ProductsLimiterProps> = ({
   return (
     <Box sx={{ minWidth: 120, marginLeft: "16px" }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Products/Page</InputLabel>
+        <InputLabel id="demo-simple-select-label">Items/Page</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           value={limit}
-          label="Products/Page"
+          label="Items/Page"
           onChange={handleLimitChange}
         >
           <MenuItem value={"8"}>8</MenuItem>

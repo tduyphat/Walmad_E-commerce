@@ -1,7 +1,7 @@
 import User from "./User";
 
 interface UsersReducerState {
-  users?: User[];
+  users: User[];
   currentUser?: User;
   error?: string;
   loading: boolean;

@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
@@ -21,19 +21,12 @@ import ImageLinkGenerator from "../components/ImageLinkGenerator";
 import UserRegisterInput from "../interfaces/UserRegisterInput";
 import GoogleProfile from "../interfaces/GoogleProfile";
 
-interface ErrorResponse {
-  message: string[];
-  error: string;
-  statusCode: number;
-}
-
 const Register = () => {
   const intialForm: UserRegisterInput = {
     name: "",
     email: "",
     password: "",
     avatar: "",
-    role: "Customer",
     addressLine1: "",
     addressLine2: "",
     postCode: 0,
@@ -78,9 +71,9 @@ const Register = () => {
         toast.success("Account created successfully!");
         navigate("/login");
       }
-    } catch (e: any) {
-      const errorResponse = e.response?.data as ErrorResponse;
-      toast.error(errorResponse.message);
+    } catch (e) {
+      const error = e as AxiosError;
+      toast.error(error.message);
     }
   };
 
