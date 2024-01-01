@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useConfirm } from "material-ui-confirm";
 
 import useAppSelector from "../hooks/useAppSelector";
@@ -160,6 +160,7 @@ const Profile = () => {
         const token = localStorage.getItem("access_token");
         const result = await axios.patch(
           `${process.env.REACT_APP_API_URL}api/v1/orders/cancel-order/${id}`,
+          {},
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -167,14 +168,12 @@ const Profile = () => {
           }
         );
         if (result.data === true) {
-          toast.success("Order cancelled!");
+          const updatedOrders = [...orders];
           const foundIndex = orders.findIndex((order) => order.id === id);
+
           if (foundIndex >= 0) {
-            setOrders([
-              ...orders.slice(0, foundIndex),
-              { ...orders[foundIndex], orderStatus: "Cancelled" },
-              ...orders.slice(foundIndex + 1),
-            ]);
+            updatedOrders[foundIndex].orderStatus = "Cancelled";
+            setOrders(updatedOrders);
           }
         } else {
           toast.error("Can't cancel order!");
