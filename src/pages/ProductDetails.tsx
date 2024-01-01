@@ -216,6 +216,7 @@ const ProductDetails = () => {
                   handleMenuClose={handleMenuClose}
                   handleSwitchToEditMode={handleSwitchToEditMode}
                   deleteReview={deleteReview}
+                  editMode={editMode}
                 />
               ))
             ) : (

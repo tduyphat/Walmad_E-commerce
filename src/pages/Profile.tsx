@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useConfirm } from "material-ui-confirm";
 
 import useAppSelector from "../hooks/useAppSelector";

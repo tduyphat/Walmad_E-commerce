@@ -35,6 +35,7 @@ interface ReviewCardProps {
   handleMenuClose: () => void;
   handleSwitchToEditMode: (review: Review) => void;
   deleteReview: (id: string) => void;
+  editMode: boolean
 }
 
 const ReviewCard: React.FC<ReviewCardProps> = ({
@@ -46,6 +47,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
   handleMenuClose,
   handleSwitchToEditMode,
   deleteReview,
+  editMode
 }) => {
   return (
     <Card key={review.id} sx={{ width: "60%", marginBottom: 2 }}>
@@ -62,6 +64,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
                   onClick={handleMenuClick}
+                  disabled={editMode ? true : false}
                 >
                   <MoreVertIcon />
                 </IconButton>
