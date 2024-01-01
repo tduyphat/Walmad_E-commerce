@@ -9,8 +9,10 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import useAppDispatch from "../hooks/useAppDispatch";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
+import useAppDispatch from "../hooks/useAppDispatch";
 import AddressForm from "../components/AddressForm";
 import PaymentForm from "../components/PaymentForm";
 import ReviewOrder from "../components/ReviewOrder";
@@ -21,10 +23,10 @@ import OrderInput from "../interfaces/OrderInput";
 import OrderProductInput from "../interfaces/OrderProductInput";
 import useAppSelector from "../hooks/useAppSelector";
 import { createOrderAsync } from "../redux/reducers/ordersReducer";
-import { toast } from "react-toastify";
 import { emptyCart } from "../redux/reducers/cartReducer";
 
 const Checkout = () => {
+  const navigate = useNavigate();
   const cart = useAppSelector((state) => state.cartReducer);
   const dispatch = useAppDispatch();
   const steps = ["Shipping address", "Payment details", "Review your order"];
@@ -150,6 +152,14 @@ const Checkout = () => {
                 We have emailed your order confirmation, and will send you an
                 update when your order has shipped.
               </Typography>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{ mt: 2 }}
+                onClick={() => navigate("/")}
+              >
+                Continue Shopping
+              </Button>
             </React.Fragment>
           ) : (
             <React.Fragment>

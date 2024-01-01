@@ -12,6 +12,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Box,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useConfirm } from "material-ui-confirm";
@@ -46,7 +47,7 @@ const OrderDashboard = () => {
 
   useEffect(() => {
     dispatch(fetchAllOrdersAsync());
-  }, []);
+  }, [dispatch]);
 
   const handleOrderStatusChange =
     (id: string) => (event: SelectChangeEvent<string>) => {
@@ -71,8 +72,7 @@ const OrderDashboard = () => {
   return (
     <>
       {!orders && loading && <Typography>Loading...</Typography>}
-      {!loading &&
-        orders &&
+      {!loading && orders.length > 0 ? (
         orders.map((order) => {
           return (
             <Accordion key={order.id}>
@@ -178,7 +178,18 @@ const OrderDashboard = () => {
               </AccordionDetails>
             </Accordion>
           );
-        })}
+        })
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography color="primary">There is no order yet.</Typography>
+        </Box>
+      )}
     </>
   );
 };

@@ -36,7 +36,7 @@ const Cart = ({
           fullWidth
           variant="contained"
           onClick={() => {
-            navigate(currentUser ? "/checkout" : "/login");
+            navigate(currentUser?.role === "Customer" ? "/checkout" : "/login");
             setCartOpen(false);
           }}
         >

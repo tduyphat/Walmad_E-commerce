@@ -152,23 +152,6 @@ const Profile = () => {
     setShowPassword(!showPassword);
   };
 
-  const fetchOrdersByUser = async () => {
-    try {
-      const token = localStorage.getItem("access_token");
-      const result = await axios.get(
-        `${process.env.REACT_APP_API_URL}api/v1/orders/user/${currentUser?.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setOrders(result.data);
-    } catch (e) {
-      toast.error("Can't load orders!");
-    }
-  };
-
   const cancelOrder = (id: string) => {
     confirm({
       description: "Your order will be cancelled.",
@@ -203,8 +186,24 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    const fetchOrdersByUser = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        const result = await axios.get(
+          `${process.env.REACT_APP_API_URL}api/v1/orders/user/${currentUser?.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setOrders(result.data);
+      } catch (e) {
+        toast.error("Can't load orders!");
+      }
+    };
     fetchOrdersByUser();
-  }, []);
+  }, [currentUser?.id]);
 
   return (
     <Grid container spacing={4}>
