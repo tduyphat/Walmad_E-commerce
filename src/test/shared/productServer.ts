@@ -5,10 +5,11 @@ import CreateProductInput from "../../interfaces/CreateProductInput";
 import Product from "../../interfaces/Product";
 import { categoriesData } from "../data/categoriesData";
 import ProductImageCreate from "../../interfaces/ProductImageCreate";
+import ProductImage from "../../interfaces/ProductImage";
 
 export const access_token = "my-access-token";
 
-const imageTransform = (imageArray: ProductImageCreate[]) => {
+const imageTransform = (imageArray: ProductImageCreate[]) : ProductImage[] => {
   const result = [];
   for (const item in imageArray) {
     const imageObject = {
@@ -17,6 +18,7 @@ const imageTransform = (imageArray: ProductImageCreate[]) => {
     };
     result.push(imageObject);
   }
+  console.log(result)
   return result;
 };
 
@@ -45,7 +47,7 @@ export const handlers = [
           images: imageTransform(input.images),
           title: input.title,
           description: input.description,
-          category,
+          category: category,
           price: input.price,
           inventory: 0,
           createdAt: new Date(),

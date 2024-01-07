@@ -115,6 +115,8 @@ const ProductDetails = () => {
         }
       );
       setReviews([...reviews, result.data]);
+      setRating(3);
+      setContent("");
     } catch (e) {
       const error = e as AxiosError;
       toast.error(error.message);
@@ -168,6 +170,7 @@ const ProductDetails = () => {
         updatedReviews[foundIndex] = result.data;
         setReviews(updatedReviews);
       }
+      handleCancelEdit();
     } catch (e) {
       const error = e as AxiosError;
       toast.error(error.message);
