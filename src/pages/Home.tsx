@@ -22,8 +22,8 @@ export default function Home() {
   };
   return (
     <>
-      {!categories && !error && loading && <CircularProgress />}
-      {!categories && !loading && error && (
+      {!error && loading && <CircularProgress />}
+      {!loading && error && (
         <Typography>Error happens!</Typography>
       )}
       {categories && products && !loading && !error && (
