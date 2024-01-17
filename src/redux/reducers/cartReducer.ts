@@ -43,9 +43,7 @@ const cartSlice = createSlice({
         state.splice(foundIndex, 1);
       }
     },
-    emptyCart: (state) => {
-      state = initialState;
-    },
+    emptyCart: () => initialState,
   },
 });
 

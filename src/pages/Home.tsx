@@ -1,7 +1,7 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import { Button, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { Grid } from "@mui/material";
 
 import useAppSelector from "../hooks/useAppSelector";
@@ -22,10 +22,18 @@ export default function Home() {
   };
   return (
     <>
-      {!error && loading && <CircularProgress />}
-      {!loading && error && (
-        <Typography>Error happens!</Typography>
+      {!error && loading && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />{" "}
+        </Box>
       )}
+      {!loading && error && <Typography>Error happens!</Typography>}
       {categories.length > 0 && products.length > 0 && !loading && !error && (
         <>
           {" "}
