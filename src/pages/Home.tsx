@@ -26,7 +26,7 @@ export default function Home() {
       {!loading && error && (
         <Typography>Error happens!</Typography>
       )}
-      {categories && products && !loading && !error && (
+      {categories.length > 0 && products.length > 0 && !loading && !error && (
         <>
           {" "}
           <Typography variant="h3" color="primary" gutterBottom>
