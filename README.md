@@ -8,6 +8,10 @@
 
 This project was done as a final project of the front-end module at [Integrify](https://www.integrify.io/). It reflects the basic functionalities of a typical e-commerce application. The data is fetched and can be created, deleted, updated from [this API](https://fakeapi.platzi.com/en/rest/introduction). The application comes with an authentication system with defined roles for users. Basic users can interact with the products by filtering, searching, sorting, or adding, removing them from their cart. While the admin can perform CRUD operations on the products in their own dashboard. All the features will be discussed in [User Interface](#user-interface) section.
 
+**NOTE**: This repository only contains the frontend of the application. The backend repository can be found [here](https://github.com/tduyphat/Walmad_E-Commerce_-Full-Stack-)
+
+Link to deployed Swagger page of the backend: https://walmad.azurewebsites.net/index.html
+
 ## Table of content
 
 1. [Technologies](#technologies)
